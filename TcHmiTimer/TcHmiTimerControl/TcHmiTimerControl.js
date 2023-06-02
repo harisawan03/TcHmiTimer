@@ -27,6 +27,7 @@ var TcHmi;
                 constructor(element, pcElement, attrs) {
                     /** Call base class constructor */
                     super(element, pcElement, attrs);
+                    this.__timerInit = true;
                 }
                 /**
                   * If raised, the control object exists in control cache and constructor of each inheritation level was called.
@@ -84,16 +85,104 @@ var TcHmi;
                     * Free resources like child controls etc.
                     */
                 }
-                // Custom Functions to write -
-                // formatTime()
-                // updateTime()
-                // displayTime() - maybe is just part of setTime()
-                setTime() {
+                __formatTime(hours, minutes, seconds) {
+                    // Format the hours, minutes, and seconds as 'hh', 'mm', and 'ss'
+                    const formattedHours = hours.toString().padStart(2, '0');
+                    const formattedMinutes = minutes.toString().padStart(2, '0');
+                    const formattedSeconds = seconds.toString().padStart(2, '0');
+                    // Return the formatted time string
+                    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+                }
+                __convertTime(timeString) {
+                    if (timeString === undefined) {
+                        timeString = 'PT0S';
+                    }
+                    // Remove the 'PT' prefix from the time string
+                    timeString = timeString.replace('PT', '');
+                    // Initialize variables to store hours, minutes, and seconds
+                    let hours = 0;
+                    let minutes = 0;
+                    let seconds = 0;
+                    // Extract the hours, minutes, and seconds from the time string
+                    const hIndex = timeString.indexOf('H');
+                    const mIndex = timeString.indexOf('M');
+                    const sIndex = timeString.indexOf('S');
+                    if (hIndex !== -1) {
+                        hours = parseInt(timeString.slice(0, hIndex));
+                    }
+                    if (mIndex !== -1) {
+                        minutes = parseInt(timeString.slice(hIndex + 1, mIndex));
+                    }
+                    if (sIndex !== -1) {
+                        seconds = parseInt(timeString.slice(mIndex + 1, sIndex));
+                    }
+                    return this.__formatTime(hours, minutes, seconds);
+                }
+                __convertMilliseconds(milliseconds) {
+                    // Calculate the hours, minutes, and seconds
+                    let hours = Math.floor(milliseconds / (1000 * 60 * 60));
+                    let minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
+                    return this.__formatTime(hours, minutes, seconds);
+                }
+                __updateTime() {
+                    const formattedTime = this.__convertTime(this.__time);
+                    const timeComponents = formattedTime.split(':');
+                    const hours = timeComponents[0];
+                    const minutes = timeComponents[1];
+                    const seconds = timeComponents[2];
+                    // so the countdown always works
+                    let tempDate = new Date();
+                    let tempYear = tempDate.getFullYear();
+                    let tempMonth = tempDate.getMonth();
+                    let tempDay = tempDate.getDate();
+                    let tempHour = tempDate.getHours();
+                    let tempMinutes = tempDate.getMinutes();
+                    let tempSeconds = tempDate.getSeconds();
+                    const futureDate = new Date(tempYear, tempMonth, tempDay, tempHour + parseInt(hours), tempMinutes + parseInt(minutes), tempSeconds + parseInt(seconds));
+                    if (this.__timerInit) {
+                        this.__futureTime = futureDate.getTime();
+                        this.__timerInit = false;
+                    }
+                    const currentTime = new Date().getTime();
+                    if (this.__futureTime !== undefined) {
+                        let remainingTime = this.__futureTime - currentTime;
+                        if (remainingTime < 0) {
+                            clearInterval(this.__countdown);
+                            remainingTime = 0;
+                        }
+                        return this.__convertMilliseconds(remainingTime);
+                    }
+                    else {
+                        return formattedTime;
+                    }
+                }
+                setTime(timeNew) {
+                    // convert the value with the value converter
+                    let convertedTime = TcHmi.ValueConverter.toString(timeNew);
+                    // check if the converted value is valid
+                    if (convertedTime === null) {
+                        // if we have no value to set we have to fall back to the defaultValueInternal from description.json
+                        convertedTime = this.getAttributeDefaultValueInternal('Time');
+                    }
+                    if (tchmi_equal(convertedTime, this.__time)) {
+                        // skip processing when the value has not changed
+                        return;
+                    }
+                    // remember the new value
+                    this.__time = convertedTime;
+                    // inform the system that the function has a changed result.
+                    TcHmi.EventProvider.raise(this.__id + '.onPropertyChanged', { propertyName: 'Time' });
+                    // call process function to process the new value
+                    this.__processTime();
                 }
                 getTime() {
                     return this.__time;
                 }
                 __processTime() {
+                    this.__countdown = setInterval(() => {
+                        this.__elementTemplateRoot.find('#Time')[0].innerHTML = this.__updateTime();
+                    }, 1000);
                 }
             }
             TcHmiTimer.TcHmiTimerControl = TcHmiTimerControl;

@@ -1,0 +1,45 @@
+{
+  "function": {
+    "name": "ConvertTime",
+    "namespace": "TcHmi.Functions.TcHmiTimer",
+    "displayName": "ConvertTime",
+    "description": "",
+    "waitMode": "Synchronous",
+    "category": "",
+    "returnValue": {
+      "type": "tchmi:general#/definitions/String"
+    },
+    "visible": true,
+    "injectContextObject": false,
+    "arguments": [
+      {
+        "name": "timeString",
+        "displayName": "timeString",
+        "type": "tchmi:general#/definitions/TimeSpan",
+        "description": "",
+        "defaultValue": null,
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false,
+        "allowControlAttributeBindingOptions": false
+      }
+    ]
+  },
+  "$schema": "./../Packages/Beckhoff.TwinCAT.HMI.Framework.12.758.8/runtimes/native1.12-tchmi/Schema/FunctionDescription.Schema.json",
+  "apiVersion": 1,
+  "version": {
+    "full": "0.0.0.0",
+    "major": 0,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "dependencyFiles": [
+    {
+      "name": "ConvertTime.js",
+      "type": "JavaScript",
+      "description": ""
+    }
+  ]
+}

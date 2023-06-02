@@ -6,7 +6,7 @@ VAR
 	Timer : TON;
 	
 	Start : BOOL;
-	inTime : TIME := T#1h10m10s;
+	inTime : TIME;
 	
 	Done : BOOL;
 	outTime : TIME;

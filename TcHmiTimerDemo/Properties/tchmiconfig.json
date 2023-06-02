@@ -50,6 +50,11 @@
       "name": "Fonts/Fonts.css",
       "description": "",
       "type": "Stylesheet"
+    },
+    {
+      "name": "ConvertTime.js",
+      "description": "",
+      "type": "JavaScript"
     }
   ],
   "userControls": [
@@ -66,7 +71,11 @@
       "preloadBindings": false
     }
   ],
-  "userFunctions": [],
+  "userFunctions": [
+    {
+      "url": "ConvertTime.js"
+    }
+  ],
   "symbols": {
     "internal": {},
     "themedResources": {}

@@ -4,6 +4,6 @@
   </div>
 <div id="Timer_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-ellapsedtime="%s%PLC1.MAIN.outTime|Interval=1%/s%" data-tchmi-height="109" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-settime="%s%PLC1.MAIN.inTime|BindingMode=TwoWay%/s%" data-tchmi-target-user-control="Timer.usercontrol" data-tchmi-top="115" data-tchmi-top-unit="px" data-tchmi-width="197" data-tchmi-width-unit="px">
 </div>
-<div id="TcHmiTimerControl" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="400" data-tchmi-height-unit="px" data-tchmi-left="253" data-tchmi-left-unit="px" data-tchmi-top="115" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px">
+<div id="TcHmiTimerControl" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="400" data-tchmi-height-unit="px" data-tchmi-left="253" data-tchmi-left-unit="px" data-tchmi-top="115" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-time="%s%PLC1.MAIN.inTime%/s%">
 </div>
 </div>

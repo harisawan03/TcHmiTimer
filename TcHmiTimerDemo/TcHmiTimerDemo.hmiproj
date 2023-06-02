@@ -128,6 +128,13 @@
     <Content Include=".eslintrc.json">
       <Visible>false</Visible>
     </Content>
+    <Content Include="ConvertTime.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>ConvertTime.js</DependentUpon>
+    </Content>
+    <Content Include="ConvertTime.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
       <SubType>Content</SubType>
     </Content>
