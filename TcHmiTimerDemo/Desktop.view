@@ -2,8 +2,46 @@
   <div id="ViewDesktopBeckhoffLogo" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-src="Images/Beckhoff_Logo.svg" data-tchmi-left="20" data-tchmi-top="20" data-tchmi-width="194" data-tchmi-height="57">
 
   </div>
-<div id="Timer_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-ellapsedtime="%s%PLC1.MAIN.outTime|Interval=1%/s%" data-tchmi-height="109" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-settime="%s%PLC1.MAIN.inTime|BindingMode=TwoWay%/s%" data-tchmi-target-user-control="Timer.usercontrol" data-tchmi-top="115" data-tchmi-top-unit="px" data-tchmi-width="197" data-tchmi-width-unit="px">
+<div id="TcHmiPopup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="436" data-tchmi-height-unit="px" data-tchmi-left="308" data-tchmi-left-unit="px" data-tchmi-top="96" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-target-file-host-keep-alive="true" data-tchmi-target-file-host-preload="true">
+
+<script data-tchmi-target-attribute="data-tchmi-target-file" type="application/json">
+{
+  "path": "TimerPage.content"
+}
+</script>
 </div>
-<div id="TcHmiTimerControl" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="400" data-tchmi-height-unit="px" data-tchmi-left="253" data-tchmi-left-unit="px" data-tchmi-top="115" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-time="%s%PLC1.MAIN.inTime%/s%">
+<div id="TcHmiButton_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="Button" data-tchmi-top="190" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="true">
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "TcHmiButton_4.onPressed",
+    "actions": [
+      {
+        "objectType": "ControlApiFunction",
+        "active": true,
+        "control": "TcHmiPopup",
+        "fn": "open",
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-text="%s%PLC1.MAIN.outTime%/s%" data-tchmi-top="145" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true">
+</div>
+<div id="TcHmiTimespanInput_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-auto-focus-out="true" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="96" data-tchmi-top-unit="px" data-tchmi-width="264" data-tchmi-width-unit="px" data-tchmi-placeholder="" data-tchmi-zindex="1">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+</div>
+<div id="TcHmiTimerControl_2" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="278" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-time="PT0S" data-tchmi-top="254" data-tchmi-top-unit="px" data-tchmi-width="272" data-tchmi-width-unit="px">
 </div>
 </div>

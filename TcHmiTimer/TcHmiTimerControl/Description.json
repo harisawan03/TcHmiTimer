@@ -42,31 +42,26 @@
       "description": "Theme independent style"
     }
   ],
-    "themes":
-    {
-        "Base":
+  "themes": {
+    "Base": {
+      "resources": [
         {
-            "resources":
-            [
-                {
-                    "name": "Themes/Base/Style.css",
-                    "type": "Stylesheet",
-                    "description": "Theme dependent style"
-                }
-            ]
-        },
-        "Base-Dark":
-        {
-            "resources":
-            [
-                {
-                    "name": "Themes/Base-Dark/Style.css",
-                    "type": "Stylesheet",
-                    "description": "Theme dependent style"
-                }
-            ]
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
         }
+      ]
     },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
   "attributes": [
     {
       "name": "data-tchmi-time",
@@ -82,9 +77,29 @@
       "description": "Value to start timer at",
       "readOnly": false,
       "bindable": true,
+      "defaultBindingMode": "TwoWay",
       "heritable": true,
       "defaultValue": "PT0S",
       "defaultValueInternal": "PT0S"
+    },
+    {
+      "name": "data-tchmi-start",
+      "propertyName": "Start",
+      "propertySetterName": "setStart",
+      "propertyGetterName": "getStart",
+      "displayName": "Start",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "Common",
+      "description": "Trigger to start timer",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "TwoWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
     }
   ],
   "attributeCategories": [],

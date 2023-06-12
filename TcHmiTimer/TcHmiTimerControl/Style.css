@@ -15,7 +15,7 @@
     This overlays the whole control with a white color
     and changes the mouse cursor */
 
-/*
+
 .TcHmi_Controls_$default_namespace$_TcHmiTimer.TcHmi_Controls_System_TcHmiControl-operate-disallowed::after {
     content: '';
     position: absolute;
@@ -27,4 +27,8 @@
     z-index: 100;
     cursor: not-allowed;
 }
-*/
+
+/*
+.TcHmi_Controls_Beckhoff_TcHmiTimespanPicker-template-first-block {
+    display: none;
+}*/

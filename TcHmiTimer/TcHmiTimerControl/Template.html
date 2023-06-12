@@ -1,6 +1,44 @@
 <div class="TcHmi_Controls_TcHmiTimer_TcHmiTimerControl-Template tchmi-box">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
         <circle id="Timer" cx="50" cy="50" r="48" stroke="black" stroke-width="1" fill="rgba(0,0,0,0)" />
-        <text id="Time" x="50%" y="50%" text-anchor="middle">00:00:00</text>
+        <text id="Time" x="50%" y="40%" text-anchor="middle">00:00:00</text>
+
+        <text id="Reset" x="30%" y="75%" text-anchor="middle" alignment-baseline="middle" font-size="0.5em">Reset</text>
+        <circle id="ResetBtn" cx="30" cy="75" r="10" stroke="black" stroke-width="0.5" fill="rgba(0,0,0,0)" />
+
+        <text id="Start" x="70%" y="75%" text-anchor="middle" alignment-baseline="middle" font-size="0.5em">Start</text>
+        <circle id="StartBtn" cx="70" cy="75" r="10" stroke="black" stroke-width="0.5" fill="rgba(0,0,0,0)" />
+
+        <div class="TcHmi_Controls_TimeInput-template">
+            <div id="{Id}_inputTime" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
+                 data-tchmi-auto-focus-out="true" data-tchmi-height="26" data-tchmi-height-unit="px"
+                 data-tchmi-left="25" data-tchmi-left-unit="%" data-tchmi-reset-to-last-valid-value="true"
+                 data-tchmi-top="53" data-tchmi-top-unit="%" data-tchmi-width="50" data-tchmi-width-unit="%">
+
+                <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+                    [
+                      {
+                        "event": "{Id}_inputTime.onValueChanged",
+                        "actions": [
+                          {
+                            "objectType": "WriteToSymbol",
+                            "active": true,
+                            "symbolExpression": "%ctrl%{Id}::Time%/ctrl%",
+                            "value": {
+                              "objectType": "Symbol",
+                              "valueType": "tchmi:general#/definitions/String",
+                              "symbolExpression": "%ctrl%{Id}_inputTime::Value%/ctrl%"
+                            },
+                            "asyncWait": true
+                          }
+                        ]
+                      }
+                    ]
+                </script>
+
+            </div>
+        </div>
+
     </svg>
 </div>

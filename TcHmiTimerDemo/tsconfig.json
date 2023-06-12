@@ -5,6 +5,7 @@
     "module": "none",
     "target": "es6",
     "skipLibCheck": true,
+    "ignoreDeprecations": "5.0",
     "lib": [
       "dom",
       "scripthost",
@@ -28,6 +29,6 @@
     "bin/"
   ],
   "include": [
-    "../Packages/Beckhoff.TwinCAT.HMI.Framework.12.758.8/runtimes/native1.12-tchmi/TcHmi.d.ts"
+    "../Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.42/runtimes/native1.12-tchmi/TcHmi.d.ts"
   ]
 }

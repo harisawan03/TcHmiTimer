@@ -5,6 +5,7 @@
     "module": "none",
     "target": "ES2020",
     "skipLibCheck": true,
+    "ignoreDeprecations":"5.0",
     "lib": [ "DOM", "DOM.Iterable", "ES2019", "ES2020.BigInt" ],
     "types": [],
     "declaration": true,

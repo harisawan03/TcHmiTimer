@@ -16,6 +16,9 @@ module TcHmi {
                 - Attention: If we have a Server Binding on an Attribute the setter will be called once with null to initialize and later with the correct value.
                 */
 
+
+                /** Setup */
+
                 /**
                  * Constructor of the control
                  * @param {JQuery} element Element from HTML (internal, do not use)
@@ -26,23 +29,51 @@ module TcHmi {
                 constructor(element: JQuery, pcElement: JQuery, attrs: TcHmi.Controls.ControlAttributeList) {
                     /** Call base class constructor */
                     super(element, pcElement, attrs);
+
+                    this.__onClickStart = (event: any) => {
+                        clearInterval(this.__countdown);
+                        this.__countdown = undefined;
+                        this.setStart(true);
+                        this.__setReset(false);
+                        this.setTime(this.__time);
+                    };
+                    this.__onClickReset = (event: any) => {
+                        clearInterval(this.__countdown);
+                        this.__countdown = undefined;
+                        this.__setReset(true);
+                        this.setStart(false);
+                        this.setTime(this.__time);
+                    };
                 }
 
-                protected __elementTemplateRoot!: JQuery;
-                protected __time: string | undefined;
-                protected __countdown: number;
+                private __onClickStart;
+                private __onClickReset;
+
+                protected __elementTemplateRootTimer!: JQuery;
+                protected __time: string;
+                protected __start: Boolean | undefined;
+                protected __reset: Boolean | undefined;
+                protected __countdown: number | undefined;
                 protected __futureTime: number;
-                protected __timerInit: Boolean = true;
+                protected __timerInit: Boolean;
+                protected __startButton: JQuery;
+                protected __resetButton: JQuery;
+
+                /** Control lifecycle */
 
 				/**
                   * If raised, the control object exists in control cache and constructor of each inheritation level was called.
                   */
                 public __previnit() {
                     // Fetch template root element
-                    this.__elementTemplateRoot = this.__element.find('.TcHmi_Controls_TcHmiTimer_TcHmiTimerControl-Template');
-                    if (this.__elementTemplateRoot.length === 0) {
+                    this.__elementTemplateRootTimer = this.__element.find('.TcHmi_Controls_TcHmiTimer_TcHmiTimerControl-Template');
+                    if (this.__elementTemplateRootTimer.length === 0) {
                         throw new Error('Invalid Template.html');
                     }
+
+                    this.__startButton = this.__elementTemplateRootTimer.find('#StartBtn');
+                    this.__resetButton = this.__elementTemplateRootTimer.find('#ResetBtn');
+                    
                     // Call __previnit of base class
                     super.__previnit();
                 }
@@ -52,6 +83,9 @@ module TcHmi {
                  */
                 public __init() {
                     super.__init();
+
+                    this.__startButton.on('click', this.__onClickStart);
+                    this.__resetButton.on('click', this.__onClickReset);
                 }
 
                 /**
@@ -91,6 +125,9 @@ module TcHmi {
                         return;
                     }
 
+                    this.__startButton.off('click', this.__onClickStart);
+                    this.__resetButton.off('click', this.__onClickReset);
+
                     super.destroy();
 
                     /**
@@ -98,6 +135,16 @@ module TcHmi {
                     */
                 }
 
+
+                /** Set Timer */
+
+                /**
+                 * 
+                 * @param hours
+                 * @param minutes
+                 * @param seconds
+                 * @returns {string}
+                 */
                 protected __formatTime(hours: number, minutes: number, seconds: number): string {
                     // Format the hours, minutes, and seconds as 'hh', 'mm', and 'ss'
                     const formattedHours = hours.toString().padStart(2, '0');
@@ -108,6 +155,11 @@ module TcHmi {
                     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
                 }
 
+                /**
+                 * 
+                 * @param timeString
+                 * @returns {string}
+                 */
                 protected __convertTime(timeString: string | undefined): string {
 
                     if (timeString === undefined) {
@@ -143,6 +195,11 @@ module TcHmi {
 
                 }
 
+                /**
+                 * 
+                 * @param milliseconds
+                 * @returns {string}
+                 */
                 protected __convertMilliseconds(milliseconds: number): string {
                     // Calculate the hours, minutes, and seconds
                     let hours = Math.floor(milliseconds / (1000 * 60 * 60));
@@ -153,7 +210,6 @@ module TcHmi {
                 }
 
                 protected __updateTime(): string {
-
                     const formattedTime = this.__convertTime(this.__time);
                     const timeComponents = formattedTime.split(':');
                     const hours = timeComponents[0];
@@ -178,7 +234,7 @@ module TcHmi {
                         tempSeconds + parseInt(seconds)
                     );
 
-                    if (this.__timerInit) {
+                    if (this.__timerInit) { // perhaps save in local storage so timer remains through refresh
                         this.__futureTime = futureDate.getTime();
                         this.__timerInit = false;
                     }
@@ -190,6 +246,7 @@ module TcHmi {
 
                         if (remainingTime < 0) {
                             clearInterval(this.__countdown);
+                            this.__countdown = undefined;
                             remainingTime = 0;
                         }
 
@@ -201,6 +258,11 @@ module TcHmi {
 
                 }
 
+                /**
+                 * 
+                 * @param timeNew
+                 * @returns {void}
+                 */
                 public setTime(timeNew: string | null): void {
                     // convert the value with the value converter
                     let convertedTime = TcHmi.ValueConverter.toString(timeNew);
@@ -226,18 +288,110 @@ module TcHmi {
                     this.__processTime();
                 }
 
+                /**
+                 * 
+                 * @returns {string | undefined}
+                 */
                 public getTime() : string | undefined {
                     return this.__time;
                 }
 
                 protected __processTime() {
-                    this.__countdown = setInterval( () => {
-                        this.__elementTemplateRoot.find('#Time')[0].innerHTML = this.__updateTime();
-                    }, 1000);
+                    this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
 
-                // add handling for times with Day
-                // add handling for time it takes to display time - ie if time is set to 1 hour, then 59:59 is displayed...
+
+                /** Start Timer */
+
+                /**
+                 * @description Setter function for 'data-tchmi-start' attribute.
+                 * @param startNew the new value or null 
+                 */
+                public setStart(startNew: boolean | null): void {
+                    // convert the value with the value converter
+                    let convertedValue = TcHmi.ValueConverter.toBoolean(startNew);
+
+                    // check if the converted value is valid
+                    if (convertedValue === null) {
+                        // if we have no value to set we have to fall back to the defaultValueInternal from description.json
+                        convertedValue = this.getAttributeDefaultValueInternal('Start') as boolean;
+                    }
+
+                    if (tchmi_equal(convertedValue, this.__start)) {
+                        // skip processing when the value has not changed
+                        return;
+                    }
+
+                    // remember the new value
+                    this.__start = convertedValue;
+
+                    // inform the system that the function has a changed result.
+                    TcHmi.EventProvider.raise(this.__id + '.onPropertyChanged', { propertyName: 'Start' });
+
+                    // call process function to process the new value
+                    this.__processStart();
+                }
+
+                /**
+                 * @description Getter function for 'data-tchmi-start' attribute.
+                 */
+                public getStart() {
+                    return this.__start;
+                }
+
+                /**
+                 * @description Processor function for 'data-tchmi-start' attribute.
+                 */
+                protected __processStart() {
+                    this.__timerInit = true;
+
+                    if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
+                        this.__countdown = setInterval(() => {
+                            this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
+                        }, 1000);
+                    }
+                }
+
+
+                /** Reset Timer */
+
+                /**
+                 * @param resetNew the new value or null 
+                 */
+                protected __setReset(resetNew: boolean | null): void {
+                    // convert the value with the value converter
+                    let convertedValue = TcHmi.ValueConverter.toBoolean(resetNew);
+
+                    // check if the converted value is valid
+                    if (convertedValue === null) {
+                        // if we have no value to set we have to fall back to the defaultValueInternal from description.json
+                        convertedValue = this.getAttributeDefaultValueInternal('Reset') as boolean;
+                    }
+
+                    if (tchmi_equal(convertedValue, this.__reset)) {
+                        // skip processing when the value has not changed
+                        return;
+                    }
+
+                    // remember the new value
+                    this.__reset = convertedValue;
+
+                    // inform the system that the function has a changed result.
+                    TcHmi.EventProvider.raise(this.__id + '.onPropertyChanged', { propertyName: 'Reset' });
+
+                    // call process function to process the new value
+                    this.__processReset();
+                }
+
+                protected __getReset() {
+                    return this.__reset;
+                }
+
+                protected __processReset() {
+                    this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
+                }
+
+
             }
         }
     }

@@ -6,13 +6,13 @@
   Deployment
   +++++++++++++++++++++++++++
 	Version: 1.0.0.0
-	Date: Jun Fri 02, 2023, Time: 16:19:11
+	Date: Jun Mon 12, 2023, Time: 14:21:27
 -->
 <html lang="en" class="tchmi-html-runtime">
 <head>
   <meta charset="utf-8">
   <title>Please enter your Title...</title>
-  <meta name="tchmi-buildtime" content="2023-06-02T16:19:11">
+  <meta name="tchmi-buildtime" content="2023-06-12T14:21:28">
 
   <!-- target-densitydpi=device-dpi -->
   <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
@@ -22,32 +22,32 @@
 </script><script>
 	 TCHMI_CONFIG_OVERRIDE = {"basePath":"/framework"};
 	 TCHMI_LIVEVIEW = true;
-	 TCHMI_ENGINEERING_WEBSOCKET = "ws://127.0.0.1:10102";
+	 TCHMI_ENGINEERING_WEBSOCKET = "ws://127.0.0.1:10104";
 	 TCHMI_ENGINEERING  = true;
 	 TCHMI_CONSOLE_LOG_LEVEL  = 2;
 	 TCHMI_CONSOLE_LOG_TCHMISERVER_MESSAGES  = false;
 	 TCHMI_CONSOLE_LOG_ENGINEERING_COM_MESSAGES  = false;
 </script><script>TCHMI_NUGET_METADATA = {
   "Beckhoff.TwinCAT.HMI.Controls": {
-    "version": "12.758.8",
+    "version": "12.760.42",
     "authors": "Beckhoff",
     "title": "Controls",
     "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides the controls for the TwinCAT HMI client."
   },
   "Beckhoff.TwinCAT.HMI.Framework": {
-    "version": "12.758.8",
+    "version": "12.760.42",
     "authors": "Beckhoff",
     "title": "Framework",
     "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides the client framework for the TwinCAT HMI."
   },
   "Beckhoff.TwinCAT.HMI.Functions": {
-    "version": "12.758.8",
+    "version": "12.760.42",
     "authors": "Beckhoff",
     "title": "Functions",
     "description": "TwinCAT HMI is a development environment for web-based HMIs (Human Machine Interfaces). This package provides functions for use in the \"Actions and Conditions Editor\" and symbol expressions."
   },
   "Microsoft.TypeScript.MSBuild": {
-    "version": "4.6.4",
+    "version": "5.0.4",
     "authors": "Microsoft",
     "title": "Microsoft.TypeScript.MSBuild",
     "description": "The TypeScript MSBuild task, and matching compiler version."
@@ -72,6 +72,7 @@
 <script src="/framework/Controls/System/TcHmiControl/TcHmiControl.js"></script>
 <script src="/framework/Controls/System/TcHmiContainerControl/TcHmiContainerControl.js"></script>
 <script src="/framework/Controls/System/TcHmiPartial/TcHmiPartial.js"></script>
+<script src="/framework/Controls/System/TcHmiPopup/TcHmiPopup.js"></script>
 <script src="/framework/Controls/System/TcHmiContainer/TcHmiContainer.js"></script>
 <script src="/framework/Controls/System/TcHmiContent/TcHmiContent.js"></script>
 <script src="/framework/Controls/System/TcHmiGrid/TcHmiGrid.js"></script>
@@ -86,6 +87,7 @@
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiCharting/TcHmiCharting.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiDirectoryBrowser/TcHmiDirectoryBrowser.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiPopups/TcHmiPopups.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/Helpers/TcHmiJsonEditors/TcHmiJsonEditors.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiButton/TcHmiButton.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiToggleButton/TcHmiToggleButton.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiBarChart/TcHmiBarChart.js"></script>
@@ -102,6 +104,8 @@
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiIFrame/TcHmiIFrame.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiImage/TcHmiImage.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiKeyboard/TcHmiKeyboard.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/UiProvider/TcHmiKeyboard/TcHmiKeyboard.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/UiProvider/TcHmiPopups/TcHmiPopups.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLine/TcHmiLine.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLinearGauge/TcHmiLinearGauge.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiLineChart/TcHmiLineChart.js"></script>
@@ -131,8 +135,12 @@
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiRecipeEdit/TcHmiRecipeEdit.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiAdsState/TcHmiAdsState.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiUserManagement/TcHmiUserManagement.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTreeView/TcHmiTreeView.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiObjectBrowser/TcHmiObjectBrowser.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Controls/TcHmiTabNavigation/TcHmiTabNavigation.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Controls/EventClassesProvider.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/ActivateRecipe.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/BigIntToNumber.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/CheckAccess.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/CheckBinding.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/CheckBindingEx.js"></script>
@@ -155,12 +163,14 @@
 <script src="/Beckhoff.TwinCAT.HMI.Functions/GetTheme.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/GoToLoginPage.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/Increment.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/IsSafeInteger.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/LineChartTooltipFormatter.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/Log.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/Login.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/LoginEx.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/Logout.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/LogoutEx.js"></script>
+<script src="/Beckhoff.TwinCAT.HMI.Functions/NumberToBigInt.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/RemoveBinding.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/SetAttributeToThemeValue.js"></script>
 <script src="/Beckhoff.TwinCAT.HMI.Functions/SetElementByIndex.js"></script>

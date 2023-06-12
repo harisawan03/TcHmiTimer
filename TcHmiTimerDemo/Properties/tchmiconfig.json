@@ -1,5 +1,5 @@
 {
-  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.758.8/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.42/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
   "basePath": "./framework",
   "scaleMode": "None",
   "startupView": "Desktop.view",
@@ -62,12 +62,20 @@
       "url": "Timer.usercontrol"
     }
   ],
-  "content": [],
+  "content": [
+    {
+      "url": "TimerPage.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
   "views": [
     {
       "url": "Desktop.view",
       "preload": false,
-      "keepAlive": false,
+      "keepAlive": true,
       "preloadBindings": false
     }
   ],
@@ -77,7 +85,14 @@
     }
   ],
   "symbols": {
-    "internal": {},
+    "internal": {
+      "n1": {
+        "value": 1.0,
+        "type": "tchmi:general#/definitions/Number",
+        "persist": false,
+        "readonly": false
+      }
+    },
     "themedResources": {}
   },
   "trigger": [],

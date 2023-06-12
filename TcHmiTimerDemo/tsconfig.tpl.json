@@ -5,6 +5,7 @@
     "module": "none",
     "target": "es6",
     "skipLibCheck": true,
+    "ignoreDeprecations": "5.0",
     "lib": [
       "dom",
       "scripthost",
