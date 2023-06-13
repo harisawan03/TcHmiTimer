@@ -176,6 +176,7 @@
     </Content>
     <Content Include="TimerPage.content">
       <SubType>Content</SubType>
+      <Cache>True</Cache>
     </Content>
     <Content Include="tsconfig.tpl.json">
       <SubType>Content</SubType>

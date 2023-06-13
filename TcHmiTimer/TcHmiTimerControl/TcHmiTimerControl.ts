@@ -6,7 +6,6 @@ module TcHmi {
     export module Controls {
         export module TcHmiTimer {
             export class TcHmiTimerControl extends TcHmi.Controls.System.TcHmiControl {
-
                 /*
                 Attribute philosophy
                 --------------------
@@ -29,7 +28,10 @@ module TcHmi {
                 constructor(element: JQuery, pcElement: JQuery, attrs: TcHmi.Controls.ControlAttributeList) {
                     /** Call base class constructor */
                     super(element, pcElement, attrs);
-
+                    this.__onUserInteractionFinishedHourDestroyEvent = null;
+                    this.__onUserInteractionFinishedMinuteDestroyEvent = null;
+                    this.__onUserInteractionFinishedSecondDestroyEvent = null;
+                    this.__onAttachedDestroyEvent = null;
                     this.__onClickStart = (event: any) => {
                         clearInterval(this.__countdown);
                         this.__countdown = undefined;
@@ -48,6 +50,10 @@ module TcHmi {
 
                 private __onClickStart;
                 private __onClickReset;
+                private __onUserInteractionFinishedHourDestroyEvent: any;
+                private __onUserInteractionFinishedMinuteDestroyEvent: any;
+                private __onUserInteractionFinishedSecondDestroyEvent: any;
+                private __onAttachedDestroyEvent: any;
 
                 protected __elementTemplateRootTimer!: JQuery;
                 protected __time: string;
@@ -58,6 +64,9 @@ module TcHmi {
                 protected __timerInit: Boolean;
                 protected __startButton: JQuery;
                 protected __resetButton: JQuery;
+                //protected __hourInput: JQuery;
+                //protected __minuteInput: JQuery;
+                //protected __secondInput: JQuery;
 
                 /** Control lifecycle */
 
@@ -86,6 +95,7 @@ module TcHmi {
 
                     this.__startButton.on('click', this.__onClickStart);
                     this.__resetButton.on('click', this.__onClickReset);
+
                 }
 
                 /**
@@ -98,6 +108,11 @@ module TcHmi {
                     /**
                      * Initialize everything which is only available while the control is part of the active dom.
                      */
+
+                    this.__onUserInteractionFinishedHourDestroyEvent = TcHmi.EventProvider.register(this.__id + '_hourInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onUserInteractionFinishedMinuteDestroyEvent = TcHmi.EventProvider.register(this.__id + '_minuteInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onAttachedDestroyEvent = TcHmi.EventProvider.register(this.__id + '.onAttached', this.__onUserInteractionFinished());
                 }
 
                 /**
@@ -111,6 +126,14 @@ module TcHmi {
                      * Disable everything which is not needed while the control is not part of the active dom.
                      * No need to listen to events for example!
                      */
+                    null !== this.__onUserInteractionFinishedHourDestroyEvent && (this.__onUserInteractionFinishedHourDestroyEvent(),
+                    this.__onUserInteractionFinishedHourDestroyEvent = null),
+                    null !== this.__onUserInteractionFinishedMinuteDestroyEvent && (this.__onUserInteractionFinishedMinuteDestroyEvent(),
+                    this.__onUserInteractionFinishedMinuteDestroyEvent = null),
+                    null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
+                    this.__onUserInteractionFinishedSecondDestroyEvent = null),
+                        null !== this.__onAttachedDestroyEvent && (this.__onAttachedDestroyEvent(),
+                        this.__onAttachedDestroyEvent = null)
                 }
 
                 /**
@@ -135,8 +158,60 @@ module TcHmi {
                     */
                 }
 
+                private __onUserInteractionFinished():any {
+                    return (evt: any) => {
+                        this.__readTime();
+                    }
+                }
+
+                protected __readTime() {
+                    const timerObj = this.__getTimerObject();
+                    const timerStr = this.__timerObjectToIso(timerObj);
+                    this.setTime(timerStr);
+                }
 
                 /** Set Timer */
+
+                protected __getTimerObject() {
+                    let timerObject = {
+                        hours: 0,
+                        minutes: 0,
+                        seconds: 0
+                    }
+                    let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput") as unknown;
+                    if (hourInputBase !== undefined) {
+                        const hourInput: any = hourInputBase;
+                        timerObject.hours = hourInput.getValue();
+                    }
+                    let minuteInputBase = TcHmi.Controls.get(this.__id + "_minuteInput") as unknown;
+                    if (minuteInputBase !== undefined) {
+                        const minuteInput: any = minuteInputBase;
+                        timerObject.minutes = minuteInput.getValue();
+                    }
+                    let secondInputBase = TcHmi.Controls.get(this.__id + "_secondInput") as unknown;
+                    if (secondInputBase !== undefined) {
+                        const secondInput: any = secondInputBase;
+                        timerObject.seconds = secondInput.getValue();
+                    }
+
+                    return timerObject;
+                }
+
+                protected __timerObjectToIso(timerObject: {
+                    hours: number;
+                    minutes: number;
+                    seconds: number;
+                }): string {
+                    if (0 === timerObject.hours && 0 === timerObject.minutes && 0 === timerObject.seconds)
+                        return "PT0S";
+                    let isoString = "PT";
+                    if (timerObject.hours > 0 && (isoString += timerObject.hours + "H"),
+                        timerObject.minutes > 0 && (isoString += timerObject.minutes + "M"),
+                        timerObject.seconds > 0) {
+                        isoString += (timerObject.seconds) + "S"
+                    }
+                    return isoString
+                }
 
                 /**
                  * 
@@ -210,7 +285,9 @@ module TcHmi {
                 }
 
                 protected __updateTime(): string {
-                    const formattedTime = this.__convertTime(this.__time);
+                    const timerObj = this.__getTimerObject();
+                    const timerStr = this.__timerObjectToIso(timerObj);
+                    const formattedTime = this.__convertTime(timerStr);
                     const timeComponents = formattedTime.split(':');
                     const hours = timeComponents[0];
                     const minutes = timeComponents[1];

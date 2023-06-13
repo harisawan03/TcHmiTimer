@@ -65,7 +65,7 @@
   "content": [
     {
       "url": "TimerPage.content",
-      "preload": false,
+      "preload": true,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
@@ -147,7 +147,7 @@
         "numeric": ""
       },
       "en": {
-        "text": "",
+        "text": "KeyboardLayouts/US - compact.keyboard.json",
         "decimal": "",
         "numeric": ""
       }
