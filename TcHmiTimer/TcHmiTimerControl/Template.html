@@ -2,7 +2,7 @@
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 
         <circle id="Timer" cx="50" cy="50" r="48" stroke="black" stroke-width="1" fill="rgba(0,0,0,0)" />
-        <text id="Time" x="50%" y="40%" text-anchor="middle">00:00:00</text>
+        <text id="Time" x="50%" y="35%" text-anchor="middle">00:00:00</text>
 
         <text id="Reset" x="30%" y="75%" text-anchor="middle" alignment-baseline="middle" font-size="0.5em">Reset</text>
         <circle id="ResetBtn" cx="30" cy="75" r="10" stroke="black" stroke-width="0.5" fill="rgba(0,0,0,0)" />
@@ -10,35 +10,79 @@
         <text id="Start" x="70%" y="75%" text-anchor="middle" alignment-baseline="middle" font-size="0.5em">Start</text>
         <circle id="StartBtn" cx="70" cy="75" r="10" stroke="black" stroke-width="0.5" fill="rgba(0,0,0,0)" />
 
-        <div class="TcHmi_Controls_TimeInput-template">
-            <div id="{Id}_inputTime" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
-                 data-tchmi-auto-focus-out="true" data-tchmi-height="26" data-tchmi-height-unit="px"
-                 data-tchmi-left="25" data-tchmi-left-unit="%" data-tchmi-reset-to-last-valid-value="true"
-                 data-tchmi-top="53" data-tchmi-top-unit="%" data-tchmi-width="50" data-tchmi-width-unit="%">
+        <div id="{Id}_hourInput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiSpinboxInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="20" data-tchmi-height-unit="%" data-tchmi-left="30" data-tchmi-left-unit="%" data-tchmi-max-value="23" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="40" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-value-horizontal-alignment="Center" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-button-position="PlusTopAndMinusBottom" data-tchmi-auto-step="true" data-tchmi-zero-padding="2">
+            <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+                {
+                  "top": 3,
+                  "right": 3,
+                  "bottom": 3,
+                  "left": 3
+                }
+            </script>
 
-                <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-                    [
+        </div>
+        <div id="{Id}_hourText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="5" data-tchmi-height-unit="%" data-tchmi-left="30" data-tchmi-left-unit="%" data-tchmi-text="Hours" data-tchmi-top="60" data-tchmi-top-unit="%" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="85" data-tchmi-text-font-size-unit="%">
+        </div>
+
+        <div id="{Id}_minuteInput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiSpinboxInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="20" data-tchmi-height-unit="%" data-tchmi-left="45" data-tchmi-left-unit="%" data-tchmi-max-value="59" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="40" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-value-horizontal-alignment="Center" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-button-position="PlusTopAndMinusBottom" data-tchmi-auto-step="true" data-tchmi-zero-padding="2">
+            <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+                {
+                  "top": 3,
+                  "right": 3,
+                  "bottom": 3,
+                  "left": 3
+                }
+            </script>
+
+        </div>
+        <div id="{Id}_minuteText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="5" data-tchmi-height-unit="%" data-tchmi-left="45" data-tchmi-left-unit="%" data-tchmi-text="Minutes" data-tchmi-top="60" data-tchmi-top-unit="%" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="85" data-tchmi-text-font-size-unit="%">
+        </div>
+
+        <div id="{Id}_secondInput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiSpinboxInput" data-tchmi-auto-focus-out="true" data-tchmi-decimal-digits="0" data-tchmi-height="20" data-tchmi-height-unit="%" data-tchmi-left="60" data-tchmi-left-unit="%" data-tchmi-max-value="59" data-tchmi-min-value="0" data-tchmi-reset-to-last-valid-value="true" data-tchmi-top="40" data-tchmi-top-unit="%" data-tchmi-value="0" data-tchmi-value-horizontal-alignment="Center" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-button-position="PlusTopAndMinusBottom" data-tchmi-auto-step="true" data-tchmi-zero-padding="2">
+            <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+                {
+                  "top": 3,
+                  "right": 3,
+                  "bottom": 3,
+                  "left": 3
+                }
+            </script>
+
+        </div>
+        <div id="{Id}_secondText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="5" data-tchmi-height-unit="%" data-tchmi-left="60" data-tchmi-left-unit="%" data-tchmi-text="Seconds" data-tchmi-top="60" data-tchmi-top-unit="%" data-tchmi-width="10" data-tchmi-width-unit="%" data-tchmi-word-wrap="true" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="85" data-tchmi-text-font-size-unit="%">
+        </div>
+
+
+
+        <!--<div class="TcHmi_Controls_TimeInput-template">
+        <div id="{Id}_inputTime" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
+             data-tchmi-auto-focus-out="true" data-tchmi-height="26" data-tchmi-height-unit="px"
+             data-tchmi-left="25" data-tchmi-left-unit="%" data-tchmi-reset-to-last-valid-value="true"
+             data-tchmi-top="53" data-tchmi-top-unit="%" data-tchmi-width="50" data-tchmi-width-unit="%">
+
+            <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+                [
+                  {
+                    "event": "{Id}_inputTime.onValueChanged",
+                    "actions": [
                       {
-                        "event": "{Id}_inputTime.onValueChanged",
-                        "actions": [
-                          {
-                            "objectType": "WriteToSymbol",
-                            "active": true,
-                            "symbolExpression": "%ctrl%{Id}::Time%/ctrl%",
-                            "value": {
-                              "objectType": "Symbol",
-                              "valueType": "tchmi:general#/definitions/String",
-                              "symbolExpression": "%ctrl%{Id}_inputTime::Value%/ctrl%"
-                            },
-                            "asyncWait": true
-                          }
-                        ]
+                        "objectType": "WriteToSymbol",
+                        "active": true,
+                        "symbolExpression": "%ctrl%{Id}::Time%/ctrl%",
+                        "value": {
+                          "objectType": "Symbol",
+                          "valueType": "tchmi:general#/definitions/String",
+                          "symbolExpression": "%ctrl%{Id}_inputTime::Value%/ctrl%"
+                        },
+                        "asyncWait": true
                       }
                     ]
-                </script>
+                  }
+                ]
+            </script>
 
-            </div>
         </div>
+    </div>-->
 
     </svg>
 </div>
