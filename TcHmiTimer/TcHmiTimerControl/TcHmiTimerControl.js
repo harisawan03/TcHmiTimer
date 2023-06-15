@@ -31,20 +31,8 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = null;
                     this.__onUserInteractionFinishedMinuteDestroyEvent = null;
                     this.__onUserInteractionFinishedSecondDestroyEvent = null;
-                    this.__onClickStart = (event) => {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        this.setStart(true);
-                        this.__setReset(false);
-                        this.setTime(this.__time);
-                    };
-                    this.__onClickReset = (event) => {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        this.__setReset(true);
-                        this.setStart(false);
-                        this.setTime(this.__time);
-                    };
+                    this.__onClickStartDestroyEvent = null;
+                    this.__onClickResetDestroyEvent = null;
                 }
                 /** Control lifecycle */
                 /**
@@ -56,8 +44,6 @@ var TcHmi;
                     if (this.__elementTemplateRootTimer.length === 0) {
                         throw new Error('Invalid Template.html');
                     }
-                    this.__startButton = this.__elementTemplateRootTimer.find('#StartBtn');
-                    this.__resetButton = this.__elementTemplateRootTimer.find('#ResetBtn');
                     // Call __previnit of base class
                     super.__previnit();
                 }
@@ -67,8 +53,6 @@ var TcHmi;
                  */
                 __init() {
                     super.__init();
-                    this.__startButton.on('click', this.__onClickStart);
-                    this.__resetButton.on('click', this.__onClickReset);
                 }
                 /**
                 * Is called by the system after the control instance gets part of the current DOM.
@@ -82,6 +66,8 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = TcHmi.EventProvider.register(this.__id + '_hourInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedMinuteDestroyEvent = TcHmi.EventProvider.register(this.__id + '_minuteInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
+                    this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
                 }
                 /**
                 * Is called by the system after the control instance is no longer part of the current DOM.
@@ -98,7 +84,11 @@ var TcHmi;
                         null !== this.__onUserInteractionFinishedMinuteDestroyEvent && (this.__onUserInteractionFinishedMinuteDestroyEvent(),
                             this.__onUserInteractionFinishedMinuteDestroyEvent = null),
                         null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
-                            this.__onUserInteractionFinishedSecondDestroyEvent = null);
+                            this.__onUserInteractionFinishedSecondDestroyEvent = null),
+                        null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
+                            this.__onClickStartDestroyEvent = null),
+                        null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
+                            this.__onClickResetDestroyEvent = null);
                 }
                 /**
                 * Destroy the current control instance.
@@ -111,8 +101,6 @@ var TcHmi;
                     if (this.__keepAlive) {
                         return;
                     }
-                    this.__startButton.off('click', this.__onClickStart);
-                    this.__resetButton.off('click', this.__onClickReset);
                     super.destroy();
                     /**
                     * Free resources like child controls etc.
@@ -123,6 +111,26 @@ var TcHmi;
                         this.__readTime();
                     };
                 }
+                __onClickStart() {
+                    return (evt) => {
+                        clearInterval(this.__countdown);
+                        this.__countdown = undefined;
+                        this.setStart(true);
+                        this.__setReset(false);
+                        this.setTime(this.__time);
+                    };
+                }
+                ;
+                __onClickReset() {
+                    return (evt) => {
+                        clearInterval(this.__countdown);
+                        this.__countdown = undefined;
+                        this.__setReset(true);
+                        this.setStart(false);
+                        this.setTime(this.__time);
+                    };
+                }
+                ;
                 __readTime() {
                     const timerObj = this.__getTimerObject();
                     const timerStr = this.__timerObjectToIso(timerObj);

@@ -11,8 +11,8 @@ declare module TcHmi {
                  * @returns {void}
                  */
                 constructor(element: JQuery, pcElement: JQuery, attrs: TcHmi.Controls.ControlAttributeList);
-                private __onClickStart;
-                private __onClickReset;
+                private __onClickStartDestroyEvent;
+                private __onClickResetDestroyEvent;
                 private __onUserInteractionFinishedHourDestroyEvent;
                 private __onUserInteractionFinishedMinuteDestroyEvent;
                 private __onUserInteractionFinishedSecondDestroyEvent;
@@ -51,6 +51,8 @@ declare module TcHmi {
                 */
                 destroy(): void;
                 private __onUserInteractionFinished;
+                private __onClickStart;
+                private __onClickReset;
                 protected __readTime(): void;
                 protected __writeTime(): void;
                 /** Set Timer */
