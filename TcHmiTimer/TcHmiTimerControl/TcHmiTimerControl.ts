@@ -526,7 +526,7 @@ module TcHmi {
                 }
 
                 protected __processReset() {
-                    this.__timerBackground.removeClass('TimesUp');
+                    this.__timerBackground?.removeClass('TimesUp');
 
                     if (this.__getReset()) {
                         let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput") as unknown;

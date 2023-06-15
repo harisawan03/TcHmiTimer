@@ -18,8 +18,8 @@
   "properties": {
     "containerControl": false,
     "geometry": {
-      "width": 150,
-      "height": 150
+      "width": 350,
+      "height": 350
     }
   },
   "template": "Template.html",

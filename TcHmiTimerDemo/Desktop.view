@@ -55,6 +55,6 @@
 </script>
 
 </div>
-<div id="TcHmiRegion" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="262" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-target-content="TimerPageStandalone.content">
+<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-time="PT0S" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px">
 </div>
 </div>
