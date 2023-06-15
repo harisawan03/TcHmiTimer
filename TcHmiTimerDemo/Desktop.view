@@ -59,4 +59,15 @@
 }
 </script>
 </div>
+<div id="TcHmiThemeSelect" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiThemeSelect" data-tchmi-height="27" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="99" data-tchmi-top-unit="px" data-tchmi-width="264" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+</div>
 </div>
