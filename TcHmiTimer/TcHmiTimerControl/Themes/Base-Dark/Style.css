@@ -2,3 +2,11 @@
 .TcHmi_Controls_TcHmiTimer_TcHmiTimerControl {
 
 }
+
+circle {
+    stroke: white;
+}
+
+text {
+    fill: white;
+}
