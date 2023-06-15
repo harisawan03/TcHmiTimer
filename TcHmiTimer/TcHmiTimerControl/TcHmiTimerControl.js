@@ -140,7 +140,7 @@ var TcHmi;
                 // writes time from display to inputs
                 __writeTime() {
                     let timeNums = [0, 0, 0];
-                    let timeComponents = this.__elementTemplateRootTimer.find('#Time').html().split(':');
+                    let timeComponents = this.__convertTime(this.getTime()).split(':');
                     timeComponents.forEach((component, index) => {
                         timeNums[index] = parseInt(component);
                     });
@@ -361,8 +361,30 @@ var TcHmi;
                     // account for timer reset on PLC
                     if (!this.getStart()) {
                         clearInterval(this.__countdown);
-                        this.__processReset();
+                        this.__setReset(true);
                         this.__writeTime();
+                    }
+                    if (this.getStart()) {
+                        let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput");
+                        if (hourInputBase !== undefined) {
+                            const hourInput = hourInputBase;
+                            hourInput.setIsEnabled(false);
+                        }
+                        let minuteInputBase = TcHmi.Controls.get(this.__id + "_minuteInput");
+                        if (minuteInputBase !== undefined) {
+                            const minuteInput = minuteInputBase;
+                            minuteInput.setIsEnabled(false);
+                        }
+                        let secondInputBase = TcHmi.Controls.get(this.__id + "_secondInput");
+                        if (secondInputBase !== undefined) {
+                            const secondInput = secondInputBase;
+                            secondInput.setIsEnabled(false);
+                        }
+                        let startButtonBase = TcHmi.Controls.get(this.__id + "_startBtn");
+                        if (startButtonBase !== undefined) {
+                            const startButton = startButtonBase;
+                            startButton.setIsEnabled(false);
+                        }
                     }
                     this.__timerInit = true;
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
@@ -383,10 +405,6 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Reset');
                     }
-                    if (tchmi_equal(convertedValue, this.__reset)) {
-                        // skip processing when the value has not changed
-                        return;
-                    }
                     // remember the new value
                     this.__reset = convertedValue;
                     // inform the system that the function has a changed result.
@@ -398,6 +416,28 @@ var TcHmi;
                     return this.__reset;
                 }
                 __processReset() {
+                    if (this.__getReset()) {
+                        let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput");
+                        if (hourInputBase !== undefined) {
+                            const hourInput = hourInputBase;
+                            hourInput.setIsEnabled(true);
+                        }
+                        let minuteInputBase = TcHmi.Controls.get(this.__id + "_minuteInput");
+                        if (minuteInputBase !== undefined) {
+                            const minuteInput = minuteInputBase;
+                            minuteInput.setIsEnabled(true);
+                        }
+                        let secondInputBase = TcHmi.Controls.get(this.__id + "_secondInput");
+                        if (secondInputBase !== undefined) {
+                            const secondInput = secondInputBase;
+                            secondInput.setIsEnabled(true);
+                        }
+                        let startButtonBase = TcHmi.Controls.get(this.__id + "_startBtn");
+                        if (startButtonBase !== undefined) {
+                            const startButton = startButtonBase;
+                            startButton.setIsEnabled(true);
+                        }
+                    }
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
             }
