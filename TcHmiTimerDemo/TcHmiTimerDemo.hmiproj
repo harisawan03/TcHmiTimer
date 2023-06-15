@@ -26,7 +26,7 @@
     <HmiViewportMaximumScale />
     <HmiViewportUserScaleable>Default</HmiViewportUserScaleable>
     <Name>TcHmiTimerDemo</Name>
-    <HmiCommunicationRouterPort>10107</HmiCommunicationRouterPort>
+    <HmiCommunicationRouterPort>10108</HmiCommunicationRouterPort>
     <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.760.42</HmiInitial>
     <HmiRecent>1.12.760.42</HmiRecent>
@@ -177,6 +177,9 @@
     <Content Include="TimerPage.content">
       <SubType>Content</SubType>
       <Cache>True</Cache>
+    </Content>
+    <Content Include="TimerPageStandalone.content">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="tsconfig.tpl.json">
       <SubType>Content</SubType>

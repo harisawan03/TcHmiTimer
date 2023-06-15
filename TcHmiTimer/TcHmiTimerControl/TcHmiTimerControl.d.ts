@@ -25,6 +25,7 @@ declare module TcHmi {
                 protected __timerInit: Boolean;
                 protected __startButton: JQuery;
                 protected __resetButton: JQuery;
+                protected __timerBackground: JQuery;
                 /** Control lifecycle */
                 /**
                   * If raised, the control object exists in control cache and constructor of each inheritation level was called.

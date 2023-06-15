@@ -53,6 +53,7 @@ var TcHmi;
                  */
                 __init() {
                     super.__init();
+                    this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
                 }
                 /**
                 * Is called by the system after the control instance gets part of the current DOM.
@@ -281,6 +282,7 @@ var TcHmi;
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
+                            this.__timerBackground.addClass('TimesUp');
                         }
                         return this.__convertMilliseconds(remainingTime);
                     }
@@ -416,6 +418,7 @@ var TcHmi;
                     return this.__reset;
                 }
                 __processReset() {
+                    this.__timerBackground.removeClass('TimesUp');
                     if (this.__getReset()) {
                         let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput");
                         if (hourInputBase !== undefined) {

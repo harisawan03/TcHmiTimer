@@ -50,6 +50,7 @@ module TcHmi {
                 protected __timerInit: Boolean;
                 protected __startButton: JQuery;
                 protected __resetButton: JQuery;
+                protected __timerBackground!: JQuery;
 
                 /** Control lifecycle */
 
@@ -72,6 +73,8 @@ module TcHmi {
                  */
                 public __init() {
                     super.__init();
+
+                    this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
                 }
 
                 /**
@@ -352,6 +355,7 @@ module TcHmi {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
+                            this.__timerBackground.addClass('TimesUp');
                         }
 
                         return this.__convertMilliseconds(remainingTime);
@@ -522,6 +526,7 @@ module TcHmi {
                 }
 
                 protected __processReset() {
+                    this.__timerBackground.removeClass('TimesUp');
 
                     if (this.__getReset()) {
                         let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput") as unknown;

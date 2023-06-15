@@ -1,0 +1,5 @@
+<div id="TimerPageStandalone" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-creator-viewport-height="800" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="TcHmiTimerControl_2" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="100" data-tchmi-height-unit="%" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-time="PT0S" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="%">
+</div>
+</div>

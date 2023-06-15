@@ -66,7 +66,14 @@
     {
       "url": "TimerPage.content",
       "preload": true,
-      "keepAlive": false,
+      "keepAlive": true,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "TimerPageStandalone.content",
+      "preload": false,
+      "keepAlive": true,
       "loadSync": false,
       "preloadBindings": false
     }
