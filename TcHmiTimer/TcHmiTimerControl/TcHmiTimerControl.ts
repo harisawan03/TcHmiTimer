@@ -150,6 +150,7 @@ module TcHmi {
                         this.setTime(this.__time);
                     }
                 };
+
                 private __onClickReset(): any {
                     return (evt: any) => {
                         clearInterval(this.__countdown);
@@ -160,12 +161,14 @@ module TcHmi {
                     }
                 };
 
+                // reads time from inputs and updates this.__time
                 protected __readTime() {
                     const timerObj = this.__getTimerObject();
                     const timerStr = this.__timerObjectToIso(timerObj);
                     this.setTime(timerStr);
                 }
 
+                // writes time from display to inputs
                 protected __writeTime() {
                     let timeNums = [0, 0, 0];
                     let timeComponents = this.__elementTemplateRootTimer.find('#Time').html().split(':');
@@ -409,7 +412,10 @@ module TcHmi {
                  * @param startNew the new value or null 
                  */
                 public setStart(startNew: boolean | null): void {
+
+                    // accounts for browser refresh
                     this.__writeTime();
+
                     // convert the value with the value converter
                     let convertedValue = TcHmi.ValueConverter.toBoolean(startNew);
 
@@ -445,6 +451,14 @@ module TcHmi {
                  * @description Processor function for 'data-tchmi-start' attribute.
                  */
                 protected __processStart() {
+
+                    // account for timer reset on PLC
+                    if (!this.getStart()) {
+                        clearInterval(this.__countdown);
+                        this.__processReset();
+                        this.__writeTime();
+                    }
+
                     this.__timerInit = true;
 
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
