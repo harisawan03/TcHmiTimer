@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47">
-	<Project ProjectGUID="{8DA5CC76-C198-4233-B75A-110026EF39FC}" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{8DA5CC76-C198-4233-B75A-110026EF39FC}" TargetNetId="192.168.86.71.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Licenses>
 				<Target BkhfOrder="00145236">
