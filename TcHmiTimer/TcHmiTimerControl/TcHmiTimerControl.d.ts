@@ -23,8 +23,6 @@ declare module TcHmi {
                 protected __countdown: number | undefined;
                 protected __futureTime: number;
                 protected __timerInit: Boolean;
-                protected __startButton: JQuery;
-                protected __resetButton: JQuery;
                 protected __timerBackground: JQuery;
                 /** Control lifecycle */
                 /**

@@ -271,7 +271,7 @@ var TcHmi;
                     let tempMinutes = tempDate.getMinutes();
                     let tempSeconds = tempDate.getSeconds();
                     const futureDate = new Date(tempYear, tempMonth, tempDay, tempHour + parseInt(hours), tempMinutes + parseInt(minutes), tempSeconds + parseInt(seconds));
-                    if (this.__timerInit) { // perhaps save in local storage so timer remains through refresh
+                    if (this.__timerInit) {
                         this.__futureTime = futureDate.getTime();
                         this.__timerInit = false;
                     }

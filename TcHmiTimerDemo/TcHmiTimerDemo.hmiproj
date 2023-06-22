@@ -176,7 +176,7 @@
     </Content>
     <Content Include="TimerPage.content">
       <SubType>Content</SubType>
-      <Cache>True</Cache>
+      <Cache>False</Cache>
     </Content>
     <Content Include="TimerPageStandalone.content">
       <SubType>Content</SubType>

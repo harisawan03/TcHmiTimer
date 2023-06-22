@@ -48,8 +48,6 @@ module TcHmi {
                 protected __countdown: number | undefined;
                 protected __futureTime: number;
                 protected __timerInit: Boolean;
-                protected __startButton: JQuery;
-                protected __resetButton: JQuery;
                 protected __timerBackground!: JQuery;
 
                 /** Control lifecycle */
@@ -231,6 +229,7 @@ module TcHmi {
                     minutes: number;
                     seconds: number;
                 }): string {
+
                     if (0 === timerObject.hours && 0 === timerObject.minutes && 0 === timerObject.seconds) {
                         return "PT0S";
                     }
@@ -240,7 +239,9 @@ module TcHmi {
                         timerObject.seconds > 0) {
                         isoString += (timerObject.seconds) + "S"
                     }
+
                     return isoString
+
                 }
 
                 /**
@@ -341,7 +342,7 @@ module TcHmi {
                         tempSeconds + parseInt(seconds)
                     );
 
-                    if (this.__timerInit) { // perhaps save in local storage so timer remains through refresh
+                    if (this.__timerInit) { 
                         this.__futureTime = futureDate.getTime();
                         this.__timerInit = false;
                     }
