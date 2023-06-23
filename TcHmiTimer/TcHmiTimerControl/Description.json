@@ -14,7 +14,7 @@
   "visible": true,
   "themeable": "Standard",
   "base": "TcHmi.Controls.System.TcHmiControl",
-  "description": "This description text will be used as a Tooltip in Visual Studio.",
+  "description": "A simple timer control.",
   "properties": {
     "containerControl": false,
     "geometry": {
