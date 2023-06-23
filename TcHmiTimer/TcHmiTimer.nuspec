@@ -3,11 +3,10 @@
   <metadata>
     <id>TcHmiTimer</id>
     <version>1.0.0</version>
-    <description>-.-</description>
-    <authors>ADD AUTHOR</authors>
+    <description>A simple Timer control for use in TwinCAT HMI. Can be used as a standalone timer or linked to the PLC.</description>
+    <authors>Haris Awan</authors>
     <title>TcHmiTimer</title>
-    <owners>ADD OWNER</owners>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <owners>Haris Awan</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2023</copyright>
