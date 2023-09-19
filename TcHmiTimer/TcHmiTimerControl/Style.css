@@ -7,11 +7,11 @@
 }
 
 .TimesUp {
-    animation: blink var(--blink-rate) steps(1, end) 0s infinite;
+    animation: time-up-indicator var(--blink-rate) steps(1, end) 0s infinite;
 }
 
 /** Start with the original style and then blink to red.  */
-@keyframes blink {
+@keyframes time-up-indicator {
     0% {
     }
 

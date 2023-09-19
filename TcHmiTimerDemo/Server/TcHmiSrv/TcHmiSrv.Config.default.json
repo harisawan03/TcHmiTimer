@@ -2549,6 +2549,42 @@
             },
             "USEMAPPING": true
         },
+        "PLC1.MAIN.Timer.IN": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Timer::IN",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "starts timer with rising edge, resets timer with falling edge",
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.MAIN.Timer.PT": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::MAIN::Timer::PT",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "comment": "time to pass, before Q is set",
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "PLC1.MAIN.inTime": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -3493,6 +3529,8 @@
                 "PLC1.MAIN.RemainingTime": 3,
                 "PLC1.MAIN.Reset": 3,
                 "PLC1.MAIN.Start": 3,
+                "PLC1.MAIN.Timer.IN": 3,
+                "PLC1.MAIN.Timer.PT": 3,
                 "PLC1.MAIN.inTime": 3,
                 "PLC1.MAIN.outTime": 3,
                 "SetLocale": 3,
@@ -3541,11 +3579,11 @@
     "VIDEOSEGMENTSIZE": 1048576,
     "VIRTUALDIRECTORIES": {
         "/": "..\\..\\TcHmiTimerDemo\\",
-        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.42\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.42\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
         "/TcHmiTimer": "..\\..\\TcHmiTimer",
         "/bin": "..\\..\\TcHmiTimerDemo\\bin\\",
         "/bin/framework": "..\\..\\TcHmiTimerDemo\\bin\\framework",
-        "/framework": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.42\\runtimes\\native1.12-tchmi"
+        "/framework": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
     }
 }
