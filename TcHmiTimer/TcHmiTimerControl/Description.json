@@ -105,7 +105,38 @@
   "attributeCategories": [],
   "functions": [
   ],
-  "events": [],
+  "events": [
+    {
+      "name": ".onTimeUp",
+      "displayName": ".onTimeUp",
+      "visible": true,
+      "displayPriority": 30,
+      "category": "Control",
+      "description": "The timeup event fires when the timer has run out.",
+      "heritable": true,
+      "allowsPreventDefault": false
+    },
+    {
+      "name": ".onTimerStart",
+      "displayName": ".onTimerStart",
+      "visible": true,
+      "displayPriority": 30,
+      "category": "Control",
+      "description": "The timerstart event fires when the timer has been started.",
+      "heritable": true,
+      "allowsPreventDefault": false
+    },
+    {
+      "name": ".onTimerReset",
+      "displayName": ".onTimerReset",
+      "visible": true,
+      "displayPriority": 30,
+      "category": "Control",
+      "description": "The timerreset event fires when the timer has been reset.",
+      "heritable": true,
+      "allowsPreventDefault": false
+    }
+  ],
   "dataTypes": [
     {
       "schema": "Schema/Types.Schema.json"

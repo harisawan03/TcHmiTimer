@@ -149,6 +149,7 @@ module TcHmi {
                         this.setStart(true);
                         this.__setReset(false);
                         this.setTime(this.__time);
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                     }
                 };
 
@@ -159,6 +160,7 @@ module TcHmi {
                         this.__setReset(true);
                         this.setStart(false);
                         this.setTime(this.__time);
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     }
                 };
 
@@ -352,11 +354,12 @@ module TcHmi {
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__futureTime - currentTime;
 
-                        if (remainingTime < 0) {
+                        if (remainingTime <= 0) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
                             this.__timerBackground.addClass('TimesUp');
+                            TcHmi.EventProvider.raise(this.__id + '.onTimeUp');
                         }
 
                         return this.__convertMilliseconds(remainingTime);
@@ -550,11 +553,11 @@ module TcHmi {
                             const startButton: any = startButtonBase;
                             startButton.setIsEnabled(true);
                         }
+
                     }
 
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
-
 
             }
         }

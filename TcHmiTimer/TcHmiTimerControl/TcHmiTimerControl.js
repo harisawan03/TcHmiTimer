@@ -119,6 +119,7 @@ var TcHmi;
                         this.setStart(true);
                         this.__setReset(false);
                         this.setTime(this.__time);
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                     };
                 }
                 ;
@@ -129,6 +130,7 @@ var TcHmi;
                         this.__setReset(true);
                         this.setStart(false);
                         this.setTime(this.__time);
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     };
                 }
                 ;
@@ -278,11 +280,12 @@ var TcHmi;
                     const currentTime = new Date().getTime();
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__futureTime - currentTime;
-                        if (remainingTime < 0) {
+                        if (remainingTime <= 0) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
                             this.__timerBackground.addClass('TimesUp');
+                            TcHmi.EventProvider.raise(this.__id + '.onTimeUp');
                         }
                         return this.__convertMilliseconds(remainingTime);
                     }
