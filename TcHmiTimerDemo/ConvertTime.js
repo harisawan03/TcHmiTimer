@@ -12,6 +12,10 @@
                     timeString = 'PT0S';
                 }
 
+                if (timeString[1] !== 'T') {
+                    return timeString;
+                }
+
                 // Remove the 'PT' prefix from the time string
                 timeString = timeString.replace('PT', '');
 

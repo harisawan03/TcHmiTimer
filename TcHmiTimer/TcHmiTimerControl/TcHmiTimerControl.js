@@ -223,6 +223,10 @@ var TcHmi;
                     if (timeString === undefined) {
                         timeString = 'PT0S';
                     }
+                    if (timeString[1] !== 'T') {
+                        timeString = 'PT0S';
+                        throw new Error('Time from PLC is greater than or equal to 1 Day');
+                    }
                     // Remove the 'PT' prefix from the time string
                     timeString = timeString.replace('PT', '');
                     // Initialize variables to store hours, minutes, and seconds
