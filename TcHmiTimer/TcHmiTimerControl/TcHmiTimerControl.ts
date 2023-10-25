@@ -167,7 +167,6 @@ module TcHmi {
                         this.setStart(false);
                         this.setTime(this.__time);
                         this.__progressAnimation.reset().skip();
-                        console.log(this.__progressAnimation.state());
                         TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     }
                 };
