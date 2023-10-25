@@ -106,6 +106,16 @@
   }
 ]
 </script>
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+{
+  "color": "rgba(66, 105, 182, 1)"
+}
+</script>
 </div>
 <div id="TcHmiTextblock_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="185" data-tchmi-left-unit="px" data-tchmi-text="%f%TcHmi.Functions.TcHmiTimer.ConvertTime(%s%PLC1.MAIN.RemainingTime%/s%)%/f%" data-tchmi-top="145" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true">
 </div>

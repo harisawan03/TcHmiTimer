@@ -50,6 +50,9 @@ module TcHmi {
                 protected __timerInit: Boolean;
                 protected __timerBackground!: JQuery;
 
+                protected __progressCircle!: JQuery;
+                protected __progressAnimation: TcHmi.Animation;
+
                 /** Control lifecycle */
 
 				/**
@@ -73,6 +76,9 @@ module TcHmi {
                     super.__init();
 
                     this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
+                    this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
+
+                    this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
                 }
 
                 /**
@@ -160,6 +166,8 @@ module TcHmi {
                         this.__setReset(true);
                         this.setStart(false);
                         this.setTime(this.__time);
+                        this.__progressAnimation.reset().skip();
+                        console.log(this.__progressAnimation.state());
                         TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     }
                 };
@@ -330,6 +338,7 @@ module TcHmi {
                     const hours = timeComponents[0];
                     const minutes = timeComponents[1];
                     const seconds = timeComponents[2];
+                    const currentTime = new Date().getTime();
 
                     // so the countdown always works
                     let tempDate = new Date();
@@ -349,12 +358,14 @@ module TcHmi {
                         tempSeconds + parseInt(seconds)
                     );
 
+
+                    const totalTime = futureDate.getTime() - currentTime;
+
                     if (this.__timerInit) { 
                         this.__futureTime = futureDate.getTime();
+                        this.__startProgressCircle(totalTime);
                         this.__timerInit = false;
                     }
-
-                    const currentTime = new Date().getTime();
 
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__futureTime - currentTime;
@@ -562,6 +573,24 @@ module TcHmi {
                     }
 
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
+                }
+
+                protected __startProgressCircle(duration: number) {
+                    const radius: number = parseFloat(this.__progressCircle.attr('r')!);
+                    const circumference = 2 * Math.PI * radius;
+
+                    const strokeOffset = (1 / 4) * circumference;
+
+                    this.__progressCircle.attr('stroke-dashoffset', strokeOffset);
+
+                    // initial stroke-dasharray = circumference 0
+                    // final stroke-dasharray = 0 circumference
+                    this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
+                        .addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
+                        .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
+                        .duration(duration);
+                    this.__progressAnimation.timingFunction('linear');
+                    this.__progressAnimation.run();
                 }
 
             }

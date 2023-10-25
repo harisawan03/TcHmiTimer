@@ -24,6 +24,8 @@ declare module TcHmi {
                 protected __futureTime: number;
                 protected __timerInit: Boolean;
                 protected __timerBackground: JQuery;
+                protected __progressCircle: JQuery;
+                protected __progressAnimation: TcHmi.Animation;
                 /** Control lifecycle */
                 /**
                   * If raised, the control object exists in control cache and constructor of each inheritation level was called.
@@ -119,6 +121,7 @@ declare module TcHmi {
                 protected __setReset(resetNew: boolean | null): void;
                 protected __getReset(): Boolean | undefined;
                 protected __processReset(): void;
+                protected __startProgressCircle(duration: number): void;
             }
         }
     }

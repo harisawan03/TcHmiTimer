@@ -54,6 +54,8 @@ var TcHmi;
                 __init() {
                     super.__init();
                     this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
+                    this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
+                    this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
                 }
                 /**
                 * Is called by the system after the control instance gets part of the current DOM.
@@ -130,6 +132,8 @@ var TcHmi;
                         this.__setReset(true);
                         this.setStart(false);
                         this.setTime(this.__time);
+                        this.__progressAnimation.reset().skip();
+                        console.log(this.__progressAnimation.state());
                         TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     };
                 }
@@ -268,6 +272,7 @@ var TcHmi;
                     const hours = timeComponents[0];
                     const minutes = timeComponents[1];
                     const seconds = timeComponents[2];
+                    const currentTime = new Date().getTime();
                     // so the countdown always works
                     let tempDate = new Date();
                     let tempYear = tempDate.getFullYear();
@@ -277,11 +282,12 @@ var TcHmi;
                     let tempMinutes = tempDate.getMinutes();
                     let tempSeconds = tempDate.getSeconds();
                     const futureDate = new Date(tempYear, tempMonth, tempDay, tempHour + parseInt(hours), tempMinutes + parseInt(minutes), tempSeconds + parseInt(seconds));
+                    const totalTime = futureDate.getTime() - currentTime;
                     if (this.__timerInit) {
                         this.__futureTime = futureDate.getTime();
+                        this.__startProgressCircle(totalTime);
                         this.__timerInit = false;
                     }
-                    const currentTime = new Date().getTime();
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__futureTime - currentTime;
                         if (remainingTime <= 0) {
@@ -449,6 +455,20 @@ var TcHmi;
                         }
                     }
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
+                }
+                __startProgressCircle(duration) {
+                    const radius = parseFloat(this.__progressCircle.attr('r'));
+                    const circumference = 2 * Math.PI * radius;
+                    const strokeOffset = (1 / 4) * circumference;
+                    this.__progressCircle.attr('stroke-dashoffset', strokeOffset);
+                    // initial stroke-dasharray = circumference 0
+                    // final stroke-dasharray = 0 circumference
+                    this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
+                        .addKeyframe('stroke-dasharray', `${circumference / 2} ${circumference / 2}`, 0.5)
+                        .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
+                        .duration(duration);
+                    this.__progressAnimation.timingFunction('linear');
+                    this.__progressAnimation.run();
                 }
             }
             TcHmiTimer.TcHmiTimerControl = TcHmiTimerControl;

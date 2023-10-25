@@ -4,6 +4,10 @@
 }
 
 #Timer {
+    stroke: black;
+}
+
+#Progress {
     stroke: white;
 }
 
