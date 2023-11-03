@@ -263,15 +263,22 @@ var TcHmi;
                     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
                     return this.__formatTime(hours, minutes, seconds);
                 }
-                __updateTime() {
+                __getFormattedTime() {
                     const timerObj = this.__getTimerObject();
                     const timerStr = this.__timerObjectToIso(timerObj);
                     const formattedTime = this.__convertTime(timerStr);
+                    return formattedTime;
+                }
+                __getTimeComponents() {
+                    const formattedTime = this.__getFormattedTime();
                     const timeComponents = formattedTime.split(':');
+                    return timeComponents;
+                }
+                __getFutureDate() {
+                    const timeComponents = this.__getTimeComponents();
                     const hours = timeComponents[0];
                     const minutes = timeComponents[1];
                     const seconds = timeComponents[2];
-                    const currentTime = new Date().getTime();
                     // so the countdown always works
                     let tempDate = new Date();
                     let tempYear = tempDate.getFullYear();
@@ -281,15 +288,32 @@ var TcHmi;
                     let tempMinutes = tempDate.getMinutes();
                     let tempSeconds = tempDate.getSeconds();
                     const futureDate = new Date(tempYear, tempMonth, tempDay, tempHour + parseInt(hours), tempMinutes + parseInt(minutes), tempSeconds + parseInt(seconds));
+                    return futureDate;
+                }
+                __getTotalTime() {
+                    const currentTime = new Date().getTime();
+                    const futureDate = this.__getFutureDate();
                     const totalTime = futureDate.getTime() - currentTime;
+                    return totalTime;
+                }
+                __getRemainingTime(futureTime) {
+                    const currentTime = new Date().getTime();
+                    let remainingTime = futureTime - currentTime;
+                    //remainingTime = remainingTime / 1000
+                    let remainingTimeRounded = Math.floor(remainingTime);
+                    remainingTimeRounded = remainingTimeRounded * 1000;
+                    return remainingTime;
+                }
+                __updateTime() {
                     if (this.__timerInit) {
+                        const futureDate = this.__getFutureDate();
                         this.__futureTime = futureDate.getTime();
-                        this.__startProgressCircle(totalTime);
                         this.__timerInit = false;
                     }
                     if (this.__futureTime !== undefined) {
-                        let remainingTime = this.__futureTime - currentTime;
-                        if (remainingTime <= 0) {
+                        let remainingTime = this.__getRemainingTime(this.__futureTime);
+                        console.log(remainingTime);
+                        if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
@@ -299,6 +323,7 @@ var TcHmi;
                         return this.__convertMilliseconds(remainingTime);
                     }
                     else {
+                        const formattedTime = this.__getFormattedTime();
                         return formattedTime;
                     }
                 }
@@ -342,7 +367,6 @@ var TcHmi;
                  * @param startNew the new value or null
                  */
                 setStart(startNew) {
-                    // accounts for browser refresh
                     this.__writeTime();
                     // convert the value with the value converter
                     let convertedValue = TcHmi.ValueConverter.toBoolean(startNew);
@@ -402,6 +426,8 @@ var TcHmi;
                     }
                     this.__timerInit = true;
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
+                        const totalTime = this.__getTotalTime();
+                        this.__startProgressCircle(totalTime);
                         this.__countdown = setInterval(() => {
                             this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         }, 1000);
@@ -463,7 +489,7 @@ var TcHmi;
                     // initial stroke-dasharray = circumference 0
                     // final stroke-dasharray = 0 circumference
                     this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
-                        //.addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
+                        .addKeyframe('stroke-dasharray', `${circumference / 2} ${circumference / 2}`, 0.5)
                         .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
                         .duration(duration);
                     this.__progressAnimation.timingFunction('linear');

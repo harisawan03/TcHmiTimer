@@ -64,7 +64,7 @@ module TcHmi {
                     if (this.__elementTemplateRootTimer.length === 0) {
                         throw new Error('Invalid Template.html');
                     }
-                    
+                                        
                     // Call __previnit of base class
                     super.__previnit();
                 }
@@ -180,6 +180,7 @@ module TcHmi {
 
                 // writes time from display to inputs
                 protected __writeTime() {
+
                     let timeNums = [0, 0, 0];
                     let timeComponents = this.__convertTime(this.getTime()).split(':');
                     timeComponents.forEach((component, index) => {
@@ -201,8 +202,6 @@ module TcHmi {
                         const secondInput: any = secondInputBase;
                         secondInput.setValue(timeNums[2]);
                     }
-
-
 
                 }
 
@@ -321,23 +320,42 @@ module TcHmi {
                  * @returns {string}
                  */
                 protected __convertMilliseconds(milliseconds: number): string {
+
                     // Calculate the hours, minutes, and seconds
                     let hours = Math.floor(milliseconds / (1000 * 60 * 60));
                     let minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
                     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
 
                     return this.__formatTime(hours, minutes, seconds);
+
                 }
 
-                protected __updateTime(): string {
+                protected __getFormattedTime(): string {
+
                     const timerObj = this.__getTimerObject();
                     const timerStr = this.__timerObjectToIso(timerObj);
                     const formattedTime = this.__convertTime(timerStr);
+
+                    return formattedTime;
+
+                }
+
+                protected __getTimeComponents(): any[] {
+
+                    const formattedTime = this.__getFormattedTime();
                     const timeComponents = formattedTime.split(':');
+
+                    return timeComponents;
+
+                }
+
+                protected __getFutureDate(): Date {
+
+                    const timeComponents = this.__getTimeComponents();
+
                     const hours = timeComponents[0];
                     const minutes = timeComponents[1];
                     const seconds = timeComponents[2];
-                    const currentTime = new Date().getTime();
 
                     // so the countdown always works
                     let tempDate = new Date();
@@ -357,19 +375,46 @@ module TcHmi {
                         tempSeconds + parseInt(seconds)
                     );
 
+                    return futureDate;
 
+                }
+
+                protected __getTotalTime(): number {
+
+                    const currentTime = new Date().getTime();
+                    const futureDate = this.__getFutureDate();
                     const totalTime = futureDate.getTime() - currentTime;
 
+                    return totalTime;
+
+                }
+
+                protected __getRemainingTime(futureTime: number): number {
+
+                    const currentTime = new Date().getTime();
+
+                    let remainingTime = futureTime - currentTime;
+                    //remainingTime = remainingTime / 1000
+
+                    let remainingTimeRounded = Math.floor(remainingTime)
+                    remainingTimeRounded = remainingTimeRounded * 1000
+
+                    return remainingTime;
+
+                }
+
+                protected __updateTime(): string {
+
                     if (this.__timerInit) { 
+                        const futureDate = this.__getFutureDate();
                         this.__futureTime = futureDate.getTime();
-                        this.__startProgressCircle(totalTime);
                         this.__timerInit = false;
                     }
 
                     if (this.__futureTime !== undefined) {
-                        let remainingTime = this.__futureTime - currentTime;
-
-                        if (remainingTime <= 0) {
+                        let remainingTime = this.__getRemainingTime(this.__futureTime);
+                        console.log(remainingTime)
+                        if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
                             remainingTime = 0;
@@ -379,6 +424,7 @@ module TcHmi {
 
                         return this.__convertMilliseconds(remainingTime);
                     } else {
+                        const formattedTime = this.__getFormattedTime();
                         return formattedTime;
                     }
 
@@ -436,7 +482,6 @@ module TcHmi {
                  */
                 public setStart(startNew: boolean | null): void {
 
-                    // accounts for browser refresh
                     this.__writeTime();
 
                     // convert the value with the value converter
@@ -508,6 +553,9 @@ module TcHmi {
                     this.__timerInit = true;
 
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
+                        const totalTime = this.__getTotalTime();
+                        this.__startProgressCircle(totalTime);
+
                         this.__countdown = setInterval(() => {
                             this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         }, 1000);
@@ -585,7 +633,7 @@ module TcHmi {
                     // initial stroke-dasharray = circumference 0
                     // final stroke-dasharray = 0 circumference
                     this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
-                        //.addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
+                        .addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
                         .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
                         .duration(duration);
                     this.__progressAnimation.timingFunction('linear');

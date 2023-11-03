@@ -87,6 +87,11 @@ declare module TcHmi {
                  * @returns {string}
                  */
                 protected __convertMilliseconds(milliseconds: number): string;
+                protected __getFormattedTime(): string;
+                protected __getTimeComponents(): any[];
+                protected __getFutureDate(): Date;
+                protected __getTotalTime(): number;
+                protected __getRemainingTime(futureTime: number): number;
                 protected __updateTime(): string;
                 /**
                  *
