@@ -463,7 +463,7 @@ var TcHmi;
                     // initial stroke-dasharray = circumference 0
                     // final stroke-dasharray = 0 circumference
                     this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
-                        .addKeyframe('stroke-dasharray', `${circumference / 2} ${circumference / 2}`, 0.5)
+                        //.addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
                         .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
                         .duration(duration);
                     this.__progressAnimation.timingFunction('linear');
