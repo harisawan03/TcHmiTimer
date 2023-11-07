@@ -123,11 +123,12 @@ declare module TcHmi {
                  */
                 protected __processStart(): void;
                 /** Reset Timer */
+                private __setReset;
                 /**
                  * @param resetNew the new value or null
                  */
-                protected __setReset(resetNew: boolean | null): void;
-                protected __getReset(): Boolean | undefined;
+                setReset(resetNew: boolean | null): void;
+                getReset(): Boolean | undefined;
                 protected __processReset(): void;
                 protected __startProgressCircle(duration: number): void;
             }

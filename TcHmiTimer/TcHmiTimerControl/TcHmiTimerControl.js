@@ -126,13 +126,7 @@ var TcHmi;
                 ;
                 __onClickReset() {
                     return (evt) => {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        //this.__setReset(true);
                         this.setStart(false);
-                        this.setTime(this.__time);
-                        this.__progressAnimation.reset().skip();
-                        //TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     };
                 }
                 ;
@@ -369,8 +363,9 @@ var TcHmi;
                     clearInterval(this.__countdown);
                     this.__countdown = undefined;
                     this.setStart(true);
-                    this.__setReset(false);
+                    this.setReset(false);
                     this.setTime(this.__time);
+                    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                 }
                 /**
                  * @description Setter function for 'data-tchmi-start' attribute.
@@ -385,9 +380,9 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Start');
                     }
-                    if (convertedValue) {
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                    }
+                    //if (convertedValue) {
+                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                    //}
                     if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
                         // skip processing when the value has not changed
                         return;
@@ -411,8 +406,7 @@ var TcHmi;
                 __processStart() {
                     // account for timer reset on PLC
                     if (!this.getStart()) {
-                        clearInterval(this.__countdown);
-                        this.__setReset(true);
+                        this.__setReset();
                         this.__writeTime();
                     }
                     if (this.getStart()) {
@@ -450,10 +444,19 @@ var TcHmi;
                     }
                 }
                 /** Reset Timer */
+                __setReset() {
+                    clearInterval(this.__countdown);
+                    this.__countdown = undefined;
+                    this.setReset(true);
+                    this.setStart(false);
+                    this.setTime(this.__time);
+                    this.__progressAnimation.reset().skip();
+                    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
+                }
                 /**
                  * @param resetNew the new value or null
                  */
-                __setReset(resetNew) {
+                setReset(resetNew) {
                     // convert the value with the value converter
                     let convertedValue = TcHmi.ValueConverter.toBoolean(resetNew);
                     // check if the converted value is valid
@@ -461,9 +464,9 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Reset');
                     }
-                    if (convertedValue) {
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
-                    }
+                    //if (convertedValue) {
+                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
+                    //}
                     // remember the new value
                     this.__reset = convertedValue;
                     // inform the system that the function has a changed result.
@@ -471,12 +474,12 @@ var TcHmi;
                     // call process function to process the new value
                     this.__processReset();
                 }
-                __getReset() {
+                getReset() {
                     return this.__reset;
                 }
                 __processReset() {
                     this.__timerBackground?.removeClass('TimesUp');
-                    if (this.__getReset()) {
+                    if (this.getReset()) {
                         let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput");
                         if (hourInputBase !== undefined) {
                             const hourInput = hourInputBase;

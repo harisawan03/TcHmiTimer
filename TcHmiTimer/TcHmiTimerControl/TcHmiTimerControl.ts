@@ -162,13 +162,7 @@ module TcHmi {
 
                 private __onClickReset(): any {
                     return (evt: any) => {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        //this.__setReset(true);
                         this.setStart(false);
-                        this.setTime(this.__time);
-                        this.__progressAnimation.reset().skip();
-                        //TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     }
                 };
 
@@ -488,8 +482,9 @@ module TcHmi {
                     clearInterval(this.__countdown);
                     this.__countdown = undefined;
                     this.setStart(true);
-                    this.__setReset(false);
+                    this.setReset(false);
                     this.setTime(this.__time);
+                    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                 }
 
                 /**
@@ -509,9 +504,9 @@ module TcHmi {
                         convertedValue = this.getAttributeDefaultValueInternal('Start') as boolean;
                     }
 
-                    if (convertedValue) {
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                    }
+                    //if (convertedValue) {
+                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                    //}
 
                     if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
                         // skip processing when the value has not changed
@@ -542,8 +537,7 @@ module TcHmi {
 
                     // account for timer reset on PLC
                     if (!this.getStart()) {
-                        clearInterval(this.__countdown);
-                        this.__setReset(true);
+                        this.__setReset();
                         this.__writeTime();
                     }
 
@@ -589,10 +583,20 @@ module TcHmi {
 
                 /** Reset Timer */
 
+                private __setReset() {
+                    clearInterval(this.__countdown);
+                    this.__countdown = undefined;
+                    this.setReset(true);
+                    this.setStart(false);
+                    this.setTime(this.__time);
+                    this.__progressAnimation.reset().skip();
+                    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
+                }
+
                 /**
                  * @param resetNew the new value or null 
                  */
-                protected __setReset(resetNew: boolean | null): void {
+                public setReset(resetNew: boolean | null): void {
                     // convert the value with the value converter
                     let convertedValue = TcHmi.ValueConverter.toBoolean(resetNew);
 
@@ -602,9 +606,9 @@ module TcHmi {
                         convertedValue = this.getAttributeDefaultValueInternal('Reset') as boolean;
                     }
 
-                    if (convertedValue) {
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
-                    }
+                    //if (convertedValue) {
+                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
+                    //}
 
                     // remember the new value
                     this.__reset = convertedValue;
@@ -616,14 +620,14 @@ module TcHmi {
                     this.__processReset();
                 }
 
-                protected __getReset() {
+                public getReset() {
                     return this.__reset;
                 }
 
                 protected __processReset() {
                     this.__timerBackground?.removeClass('TimesUp');
 
-                    if (this.__getReset()) {
+                    if (this.getReset()) {
                         let hourInputBase = TcHmi.Controls.get(this.__id + "_hourInput") as unknown;
                         if (hourInputBase !== undefined) {
                             const hourInput: any = hourInputBase;
