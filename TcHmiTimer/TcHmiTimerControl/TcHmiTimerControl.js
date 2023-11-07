@@ -31,7 +31,6 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = null;
                     this.__onUserInteractionFinishedMinuteDestroyEvent = null;
                     this.__onUserInteractionFinishedSecondDestroyEvent = null;
-                    this.__onLoadDestroyEvent = null;
                     this.__onClickStartDestroyEvent = null;
                     this.__onClickResetDestroyEvent = null;
                 }
@@ -58,12 +57,7 @@ var TcHmi;
                     this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
                     this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
                     if (this.getStart()) {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        this.setStart(true);
-                        this.__setReset(false);
-                        this.setTime(this.__time);
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                        this.__setStart();
                     }
                     this.__isTimerInitialized = true;
                 }
@@ -79,7 +73,6 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = TcHmi.EventProvider.register(this.__id + '_hourInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedMinuteDestroyEvent = TcHmi.EventProvider.register(this.__id + '_minuteInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
-                    this.__onLoadDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onAttached', this.__onLoad());
                     this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
                 }
@@ -99,8 +92,6 @@ var TcHmi;
                             this.__onUserInteractionFinishedMinuteDestroyEvent = null),
                         null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
                             this.__onUserInteractionFinishedSecondDestroyEvent = null),
-                        null !== this.__onLoadDestroyEvent && (this.__onLoadDestroyEvent(),
-                            this.__onLoadDestroyEvent = null),
                         null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
                             this.__onClickStartDestroyEvent = null),
                         null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
@@ -127,27 +118,9 @@ var TcHmi;
                         this.__readTime();
                     };
                 }
-                __onLoad() {
-                    return (evt) => {
-                        //if (this.getStart() && !this.__getKeepAlive()) {
-                        //    clearInterval(this.__countdown);
-                        //    this.__countdown = undefined;
-                        //    this.setStart(true);
-                        //    this.__setReset(false);
-                        //    this.setTime(this.__time);
-                        //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                        //}
-                    };
-                }
-                ;
                 __onClickStart() {
                     return (evt) => {
-                        clearInterval(this.__countdown);
-                        this.__countdown = undefined;
-                        this.setStart(true);
-                        this.__setReset(false);
-                        this.setTime(this.__time);
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                        this.__setStart();
                     };
                 }
                 ;
@@ -155,11 +128,11 @@ var TcHmi;
                     return (evt) => {
                         clearInterval(this.__countdown);
                         this.__countdown = undefined;
-                        this.__setReset(true);
+                        //this.__setReset(true);
                         this.setStart(false);
                         this.setTime(this.__time);
                         this.__progressAnimation.reset().skip();
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
+                        //TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     };
                 }
                 ;
@@ -392,6 +365,13 @@ var TcHmi;
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
                 /** Start Timer */
+                __setStart() {
+                    clearInterval(this.__countdown);
+                    this.__countdown = undefined;
+                    this.setStart(true);
+                    this.__setReset(false);
+                    this.setTime(this.__time);
+                }
                 /**
                  * @description Setter function for 'data-tchmi-start' attribute.
                  * @param startNew the new value or null
@@ -404,6 +384,9 @@ var TcHmi;
                     if (convertedValue === null) {
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Start');
+                    }
+                    if (convertedValue) {
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                     }
                     if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
                         // skip processing when the value has not changed
@@ -477,6 +460,9 @@ var TcHmi;
                     if (convertedValue === null) {
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Reset');
+                    }
+                    if (convertedValue) {
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                     }
                     // remember the new value
                     this.__reset = convertedValue;
