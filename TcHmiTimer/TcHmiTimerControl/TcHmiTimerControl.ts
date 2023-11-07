@@ -81,6 +81,7 @@ module TcHmi {
 
                     this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
 
+                    // start timer when Start is true on init - ie the Start property
                     if (this.getStart()) {
                         this.__setStart();
                     }
@@ -504,10 +505,6 @@ module TcHmi {
                         convertedValue = this.getAttributeDefaultValueInternal('Start') as boolean;
                     }
 
-                    //if (convertedValue) {
-                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                    //}
-
                     if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
                         // skip processing when the value has not changed
                         return;
@@ -605,10 +602,6 @@ module TcHmi {
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Reset') as boolean;
                     }
-
-                    //if (convertedValue) {
-                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
-                    //}
 
                     // remember the new value
                     this.__reset = convertedValue;

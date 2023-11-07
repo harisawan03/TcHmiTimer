@@ -56,6 +56,7 @@ var TcHmi;
                     this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
                     this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
                     this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
+                    // start timer when Start is true on init - ie the Start property
                     if (this.getStart()) {
                         this.__setStart();
                     }
@@ -380,9 +381,6 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Start');
                     }
-                    //if (convertedValue) {
-                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                    //}
                     if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
                         // skip processing when the value has not changed
                         return;
@@ -464,9 +462,6 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Reset');
                     }
-                    //if (convertedValue) {
-                    //    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
-                    //}
                     // remember the new value
                     this.__reset = convertedValue;
                     // inform the system that the function has a changed result.
