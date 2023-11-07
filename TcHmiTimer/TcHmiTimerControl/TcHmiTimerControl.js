@@ -57,6 +57,15 @@ var TcHmi;
                     this.__timerBackground = this.__elementTemplateRootTimer.find('#Background');
                     this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
                     this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
+                    if (this.getStart()) {
+                        clearInterval(this.__countdown);
+                        this.__countdown = undefined;
+                        this.setStart(true);
+                        this.__setReset(false);
+                        this.setTime(this.__time);
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                    }
+                    this.__isTimerInitialized = true;
                 }
                 /**
                 * Is called by the system after the control instance gets part of the current DOM.
@@ -120,14 +129,14 @@ var TcHmi;
                 }
                 __onLoad() {
                     return (evt) => {
-                        if (this.getStart()) {
-                            clearInterval(this.__countdown);
-                            this.__countdown = undefined;
-                            this.setStart(true);
-                            this.__setReset(false);
-                            this.setTime(this.__time);
-                            TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                        }
+                        //if (this.getStart() && !this.__getKeepAlive()) {
+                        //    clearInterval(this.__countdown);
+                        //    this.__countdown = undefined;
+                        //    this.setStart(true);
+                        //    this.__setReset(false);
+                        //    this.setTime(this.__time);
+                        //    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                        //}
                     };
                 }
                 ;
@@ -396,10 +405,10 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Start');
                     }
-                    //if (tchmi_equal(convertedValue, this.__start)) {
-                    //    // skip processing when the value has not changed
-                    //    return;
-                    //}
+                    if (tchmi_equal(convertedValue, this.__start) && this.__isTimerInitialized) {
+                        // skip processing when the value has not changed
+                        return;
+                    }
                     // remember the new value
                     this.__start = convertedValue;
                     // inform the system that the function has a changed result.

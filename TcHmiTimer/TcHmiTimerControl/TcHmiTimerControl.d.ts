@@ -17,6 +17,7 @@ declare module TcHmi {
                 private __onUserInteractionFinishedHourDestroyEvent;
                 private __onUserInteractionFinishedMinuteDestroyEvent;
                 private __onUserInteractionFinishedSecondDestroyEvent;
+                private __isTimerInitialized;
                 protected __elementTemplateRootTimer: JQuery;
                 protected __time: string;
                 protected __start: Boolean | undefined;

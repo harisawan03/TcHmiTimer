@@ -82,7 +82,7 @@
     {
       "url": "Desktop.view",
       "preload": false,
-      "keepAlive": true,
+      "keepAlive": false,
       "preloadBindings": false
     }
   ],
