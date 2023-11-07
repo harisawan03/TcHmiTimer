@@ -76,6 +76,10 @@ var TcHmi;
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
+                    // raise onTimerStart event when Start is true on init - ie the Start property
+                    if (this.getStart()) {
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                    }
                 }
                 /**
                 * Is called by the system after the control instance is no longer part of the current DOM.
@@ -403,7 +407,7 @@ var TcHmi;
                  */
                 __processStart() {
                     // account for timer reset on PLC
-                    if (!this.getStart()) {
+                    if (!this.getStart() && this.__isTimerInitialized) {
                         this.__setReset();
                         this.__writeTime();
                     }

@@ -55,7 +55,7 @@
 </script>
 
 </div>
-<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="true" data-tchmi-time="PT5S" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px">
+<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-time="PT5S" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px">
 
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [
