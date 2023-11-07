@@ -240,9 +240,10 @@ module TcHmi {
                     seconds: number;
                 }): string {
 
-                    if (0 === timerObject.hours && 0 === timerObject.minutes && 0 === timerObject.seconds) {
+                    if (timerObject.hours === 0 && timerObject.minutes === 0 && timerObject.seconds === 0) {
                         return "PT0S";
                     }
+
                     let isoString = "PT";
                     if (timerObject.hours > 0 && (isoString += timerObject.hours + "H"),
                         timerObject.minutes > 0 && (isoString += timerObject.minutes + "M"),
@@ -332,6 +333,7 @@ module TcHmi {
 
                 }
 
+                // get time in HH:MM:SS string format
                 protected __getFormattedTime(): string {
 
                     const timerObj = this.__getTimerObject();
@@ -342,6 +344,7 @@ module TcHmi {
 
                 }
 
+                // split formatted time into an array of its individual components
                 protected __getTimeComponents(): any[] {
 
                     const formattedTime = this.__getFormattedTime();
@@ -351,6 +354,7 @@ module TcHmi {
 
                 }
 
+                // get the date at the set time in the future for a reference point
                 protected __getFutureDate(): Date {
 
                     const timeComponents = this.__getTimeComponents();
@@ -412,6 +416,7 @@ module TcHmi {
 
                 }
 
+                // get the updated time to display on the timer
                 protected __updateTime(): string {
 
                     if (this.__timerInit) { 
@@ -653,6 +658,7 @@ module TcHmi {
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
 
+                // animation for progress bar visual
                 protected __startProgressCircle(duration: number) {
                     const radius: number = parseFloat(this.__progressCircle.attr('r')!);
                     const circumference = 2 * Math.PI * radius;

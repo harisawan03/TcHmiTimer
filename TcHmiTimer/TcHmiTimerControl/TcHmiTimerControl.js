@@ -189,7 +189,7 @@ var TcHmi;
                     return timerObject;
                 }
                 __timerObjectToIso(timerObject) {
-                    if (0 === timerObject.hours && 0 === timerObject.minutes && 0 === timerObject.seconds) {
+                    if (timerObject.hours === 0 && timerObject.minutes === 0 && timerObject.seconds === 0) {
                         return "PT0S";
                     }
                     let isoString = "PT";
@@ -261,17 +261,20 @@ var TcHmi;
                     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
                     return this.__formatTime(hours, minutes, seconds);
                 }
+                // get time in HH:MM:SS string format
                 __getFormattedTime() {
                     const timerObj = this.__getTimerObject();
                     const timerStr = this.__timerObjectToIso(timerObj);
                     const formattedTime = this.__convertTime(timerStr);
                     return formattedTime;
                 }
+                // split formatted time into an array of its individual components
                 __getTimeComponents() {
                     const formattedTime = this.__getFormattedTime();
                     const timeComponents = formattedTime.split(':');
                     return timeComponents;
                 }
+                // get the date at the set time in the future for a reference point
                 __getFutureDate() {
                     const timeComponents = this.__getTimeComponents();
                     const hours = timeComponents[0];
@@ -307,6 +310,7 @@ var TcHmi;
                     const remainingTimeRounded = this.__roundToSecond(remainingTime);
                     return remainingTimeRounded;
                 }
+                // get the updated time to display on the timer
                 __updateTime() {
                     if (this.__timerInit) {
                         const futureDate = this.__getFutureDate();
@@ -502,6 +506,7 @@ var TcHmi;
                     }
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
+                // animation for progress bar visual
                 __startProgressCircle(duration) {
                     const radius = parseFloat(this.__progressCircle.attr('r'));
                     const circumference = 2 * Math.PI * radius;
