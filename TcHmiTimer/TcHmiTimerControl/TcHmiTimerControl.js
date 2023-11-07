@@ -31,6 +31,7 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = null;
                     this.__onUserInteractionFinishedMinuteDestroyEvent = null;
                     this.__onUserInteractionFinishedSecondDestroyEvent = null;
+                    this.__onLoadDestroyEvent = null;
                     this.__onClickStartDestroyEvent = null;
                     this.__onClickResetDestroyEvent = null;
                 }
@@ -69,6 +70,7 @@ var TcHmi;
                     this.__onUserInteractionFinishedHourDestroyEvent = TcHmi.EventProvider.register(this.__id + '_hourInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedMinuteDestroyEvent = TcHmi.EventProvider.register(this.__id + '_minuteInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onLoadDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onAttached', this.__onLoad());
                     this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
                 }
@@ -88,6 +90,8 @@ var TcHmi;
                             this.__onUserInteractionFinishedMinuteDestroyEvent = null),
                         null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
                             this.__onUserInteractionFinishedSecondDestroyEvent = null),
+                        null !== this.__onLoadDestroyEvent && (this.__onLoadDestroyEvent(),
+                            this.__onLoadDestroyEvent = null),
                         null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
                             this.__onClickStartDestroyEvent = null),
                         null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
@@ -114,6 +118,19 @@ var TcHmi;
                         this.__readTime();
                     };
                 }
+                __onLoad() {
+                    return (evt) => {
+                        if (this.getStart()) {
+                            clearInterval(this.__countdown);
+                            this.__countdown = undefined;
+                            this.setStart(true);
+                            this.__setReset(false);
+                            this.setTime(this.__time);
+                            TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                        }
+                    };
+                }
+                ;
                 __onClickStart() {
                     return (evt) => {
                         clearInterval(this.__countdown);
@@ -317,7 +334,6 @@ var TcHmi;
                     }
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__getRemainingTime(this.__futureTime);
-                        console.log(remainingTime);
                         if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
@@ -380,10 +396,10 @@ var TcHmi;
                         // if we have no value to set we have to fall back to the defaultValueInternal from description.json
                         convertedValue = this.getAttributeDefaultValueInternal('Start');
                     }
-                    if (tchmi_equal(convertedValue, this.__start)) {
-                        // skip processing when the value has not changed
-                        return;
-                    }
+                    //if (tchmi_equal(convertedValue, this.__start)) {
+                    //    // skip processing when the value has not changed
+                    //    return;
+                    //}
                     // remember the new value
                     this.__start = convertedValue;
                     // inform the system that the function has a changed result.

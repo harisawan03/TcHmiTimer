@@ -31,10 +31,12 @@ module TcHmi {
                     this.__onUserInteractionFinishedHourDestroyEvent = null;
                     this.__onUserInteractionFinishedMinuteDestroyEvent = null;
                     this.__onUserInteractionFinishedSecondDestroyEvent = null;
+                    this.__onLoadDestroyEvent = null;
                     this.__onClickStartDestroyEvent = null;
                     this.__onClickResetDestroyEvent = null;
                 }
 
+                private __onLoadDestroyEvent: any;
                 private __onClickStartDestroyEvent: any;
                 private __onClickResetDestroyEvent: any;
                 private __onUserInteractionFinishedHourDestroyEvent: any;
@@ -95,6 +97,7 @@ module TcHmi {
                     this.__onUserInteractionFinishedHourDestroyEvent = TcHmi.EventProvider.register(this.__id + '_hourInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedMinuteDestroyEvent = TcHmi.EventProvider.register(this.__id + '_minuteInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
+                    this.__onLoadDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onAttached', this.__onLoad());
                     this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
                 }
@@ -116,6 +119,8 @@ module TcHmi {
                     this.__onUserInteractionFinishedMinuteDestroyEvent = null),
                     null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
                     this.__onUserInteractionFinishedSecondDestroyEvent = null),
+                    null !== this.__onLoadDestroyEvent && (this.__onLoadDestroyEvent(),
+                    this.__onLoadDestroyEvent = null),
                     null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
                     this.__onClickStartDestroyEvent = null),
                     null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
@@ -147,7 +152,19 @@ module TcHmi {
                     }
                 }
 
-                
+                private __onLoad(): any {
+                    return (evt: any) => {
+                        if (this.getStart()) {
+                            clearInterval(this.__countdown);
+                            this.__countdown = undefined;
+                            this.setStart(true);
+                            this.__setReset(false);
+                            this.setTime(this.__time);
+                            TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
+                        }
+                    }
+                };
+
                 private __onClickStart(): any {
                     return (evt: any) => {
                         clearInterval(this.__countdown);
@@ -420,7 +437,7 @@ module TcHmi {
 
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__getRemainingTime(this.__futureTime);
-                        console.log(remainingTime)
+                        
                         if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
@@ -500,10 +517,10 @@ module TcHmi {
                         convertedValue = this.getAttributeDefaultValueInternal('Start') as boolean;
                     }
 
-                    if (tchmi_equal(convertedValue, this.__start)) {
-                        // skip processing when the value has not changed
-                        return;
-                    }
+                    //if (tchmi_equal(convertedValue, this.__start)) {
+                    //    // skip processing when the value has not changed
+                    //    return;
+                    //}
 
                     // remember the new value
                     this.__start = convertedValue;
