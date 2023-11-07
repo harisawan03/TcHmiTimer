@@ -294,15 +294,20 @@ var TcHmi;
                     const currentTime = new Date().getTime();
                     const futureDate = this.__getFutureDate();
                     const totalTime = futureDate.getTime() - currentTime;
-                    return totalTime;
+                    const roundedTotal = this.__roundToSecond(totalTime);
+                    return roundedTotal;
+                }
+                __roundToSecond(time) {
+                    const seconds = time / 1000;
+                    const round = Math.ceil(seconds);
+                    const roundedMilliseconds = round * 1000;
+                    return roundedMilliseconds;
                 }
                 __getRemainingTime(futureTime) {
                     const currentTime = new Date().getTime();
-                    let remainingTime = futureTime - currentTime;
-                    //remainingTime = remainingTime / 1000
-                    let remainingTimeRounded = Math.floor(remainingTime);
-                    remainingTimeRounded = remainingTimeRounded * 1000;
-                    return remainingTime;
+                    const remainingTime = futureTime - currentTime;
+                    const remainingTimeRounded = this.__roundToSecond(remainingTime);
+                    return remainingTimeRounded;
                 }
                 __updateTime() {
                     if (this.__timerInit) {
@@ -426,8 +431,11 @@ var TcHmi;
                     }
                     this.__timerInit = true;
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
-                        const totalTime = this.__getTotalTime();
-                        this.__startProgressCircle(totalTime);
+                        if (this.__timerInit) {
+                            const totalTime = this.__getTotalTime();
+                            this.__startProgressCircle(totalTime);
+                        }
+                        this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         this.__countdown = setInterval(() => {
                             this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         }, 1000);
@@ -486,8 +494,6 @@ var TcHmi;
                     const circumference = 2 * Math.PI * radius;
                     const strokeOffset = (1 / 4) * circumference;
                     this.__progressCircle.attr('stroke-dashoffset', strokeOffset);
-                    // initial stroke-dasharray = circumference 0
-                    // final stroke-dasharray = 0 circumference
                     this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
                         .addKeyframe('stroke-dasharray', `${circumference / 2} ${circumference / 2}`, 0.5)
                         .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)

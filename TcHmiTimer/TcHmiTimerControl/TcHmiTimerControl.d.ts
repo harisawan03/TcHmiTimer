@@ -91,6 +91,7 @@ declare module TcHmi {
                 protected __getTimeComponents(): any[];
                 protected __getFutureDate(): Date;
                 protected __getTotalTime(): number;
+                protected __roundToSecond(time: number): number;
                 protected __getRemainingTime(futureTime: number): number;
                 protected __updateTime(): string;
                 /**

@@ -384,22 +384,29 @@ module TcHmi {
                     const currentTime = new Date().getTime();
                     const futureDate = this.__getFutureDate();
                     const totalTime = futureDate.getTime() - currentTime;
+                    const roundedTotal = this.__roundToSecond(totalTime);
+                    
+                    return roundedTotal;
 
-                    return totalTime;
+                }
+
+                protected __roundToSecond(time: number) {
+
+                    const seconds = time / 1000;
+                    const round = Math.ceil(seconds);
+                    const roundedMilliseconds = round * 1000;
+
+                    return roundedMilliseconds;
 
                 }
 
                 protected __getRemainingTime(futureTime: number): number {
 
                     const currentTime = new Date().getTime();
+                    const remainingTime = futureTime - currentTime;
+                    const remainingTimeRounded = this.__roundToSecond(remainingTime);
 
-                    let remainingTime = futureTime - currentTime;
-                    //remainingTime = remainingTime / 1000
-
-                    let remainingTimeRounded = Math.floor(remainingTime)
-                    remainingTimeRounded = remainingTimeRounded * 1000
-
-                    return remainingTime;
+                    return remainingTimeRounded;
 
                 }
 
@@ -553,9 +560,13 @@ module TcHmi {
                     this.__timerInit = true;
 
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
-                        const totalTime = this.__getTotalTime();
-                        this.__startProgressCircle(totalTime);
 
+                        if (this.__timerInit) {
+                            const totalTime = this.__getTotalTime();
+                            this.__startProgressCircle(totalTime);
+                        }
+
+                        this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         this.__countdown = setInterval(() => {
                             this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         }, 1000);
@@ -630,8 +641,6 @@ module TcHmi {
 
                     this.__progressCircle.attr('stroke-dashoffset', strokeOffset);
 
-                    // initial stroke-dasharray = circumference 0
-                    // final stroke-dasharray = 0 circumference
                     this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
                         .addKeyframe('stroke-dasharray', `${circumference/2} ${circumference/2}`, 0.5)
                         .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
