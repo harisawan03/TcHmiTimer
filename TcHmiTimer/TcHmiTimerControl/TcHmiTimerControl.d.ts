@@ -16,6 +16,8 @@ declare module TcHmi {
                 private __onUserInteractionFinishedHourDestroyEvent;
                 private __onUserInteractionFinishedMinuteDestroyEvent;
                 private __onUserInteractionFinishedSecondDestroyEvent;
+                private __onAttachedDestroyEvent;
+                private __onDetachedDestroyEvent;
                 private __isTimerInitialized;
                 protected __elementTemplateRootTimer: JQuery;
                 protected __time: string;
@@ -55,6 +57,9 @@ declare module TcHmi {
                 private __onUserInteractionFinished;
                 private __onClickStart;
                 private __onClickReset;
+                private __onAttached;
+                private __onDetached;
+                protected __millisecondsToTimespan(milliseconds: number): string;
                 protected __readTime(): void;
                 protected __writeTime(): void;
                 /** Set Timer */
@@ -130,6 +135,7 @@ declare module TcHmi {
                 setReset(resetNew: boolean | null): void;
                 getReset(): Boolean | undefined;
                 protected __processReset(): void;
+                protected __getCircumference(): number;
                 protected __startProgressCircle(duration: number): void;
             }
         }

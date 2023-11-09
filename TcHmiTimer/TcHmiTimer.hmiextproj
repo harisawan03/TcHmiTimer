@@ -19,7 +19,7 @@
     <ProjectName>TcHmiTimer</ProjectName>
     <Name>TcHmiTimer</Name>
     <HmiInitial>1.12.760.42</HmiInitial>
-    <HmiRecent>1.12.760.48</HmiRecent>
+    <HmiRecent>1.12.760.54</HmiRecent>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>

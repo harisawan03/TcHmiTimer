@@ -29,6 +29,6 @@
     "bin/"
   ],
   "include": [
-    "../TcHmiTimer/Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.48/runtimes/native1.12-tchmi/TcHmi.d.ts"
+    "../TcHmiTimer/Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.54/runtimes/native1.12-tchmi/TcHmi.d.ts"
   ]
 }

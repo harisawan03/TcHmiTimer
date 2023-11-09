@@ -29,7 +29,7 @@
     <HmiCommunicationRouterPort>10111</HmiCommunicationRouterPort>
     <HmiCommunicationServerAuthPort>13001</HmiCommunicationServerAuthPort>
     <HmiInitial>1.12.760.42</HmiInitial>
-    <HmiRecent>1.12.760.48</HmiRecent>
+    <HmiRecent>1.12.760.54</HmiRecent>
     <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -119,6 +119,7 @@
     <Folder Include="Imports\Videos" />
     <Folder Include="KeyboardLayouts\" />
     <Folder Include="Localization" />
+    <Folder Include="Pages" />
     <Folder Include="Themes" />
     <Folder Include="Themes\Base-Dark\Images\" />
     <Folder Include="Themes\Base\" />
@@ -138,6 +139,18 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="packages.config">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\TimerPagePopup.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\TimerPageLinked.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\TimerPageStandalone.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\TimerTabs.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
@@ -173,13 +186,6 @@
     <Content Include="Timer.usercontrol.json">
       <SubType>Content</SubType>
       <DependentUpon>Timer.usercontrol</DependentUpon>
-    </Content>
-    <Content Include="TimerPage.content">
-      <SubType>Content</SubType>
-      <Cache>False</Cache>
-    </Content>
-    <Content Include="TimerPageStandalone.content">
-      <SubType>Content</SubType>
     </Content>
     <Content Include="tsconfig.tpl.json">
       <SubType>Content</SubType>

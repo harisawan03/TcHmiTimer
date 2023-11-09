@@ -33,6 +33,8 @@ var TcHmi;
                     this.__onUserInteractionFinishedSecondDestroyEvent = null;
                     this.__onClickStartDestroyEvent = null;
                     this.__onClickResetDestroyEvent = null;
+                    this.__onAttachedDestroyEvent = null;
+                    this.__onDetachedDestroyEvent = null;
                 }
                 /** Control lifecycle */
                 /**
@@ -57,9 +59,22 @@ var TcHmi;
                     this.__progressCircle = this.__elementTemplateRootTimer.find('#Progress');
                     this.__progressAnimation = new TcHmi.Animation(this.__id, '#Progress');
                     // start timer when Start is true on init - ie the Start property
+                    const isStarted = localStorage.getItem(this.__id + '_is-started');
+                    if (isStarted === 'true') {
+                        this.setStart(true);
+                    }
+                    else {
+                        this.setStart(false);
+                    }
                     if (this.getStart()) {
+                        const storedTime = localStorage.getItem(this.__id + '_time');
+                        let remainingTime = this.__getRemainingTime(parseInt(storedTime));
+                        const convertedTime = this.__millisecondsToTimespan(remainingTime);
+                        this.setTime(convertedTime);
                         this.__setStart();
                     }
+                    localStorage.removeItem(this.__id + '_is-started');
+                    localStorage.removeItem(this.__id + '_current-time');
                     this.__isTimerInitialized = true;
                 }
                 /**
@@ -76,6 +91,8 @@ var TcHmi;
                     this.__onUserInteractionFinishedSecondDestroyEvent = TcHmi.EventProvider.register(this.__id + '_secondInput.onUserInteractionFinished', this.__onUserInteractionFinished());
                     this.__onClickStartDestroyEvent = TcHmi.EventProvider.register(this.__id + '_startBtn.onPressed', this.__onClickStart());
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
+                    this.__onAttachedDestroyEvent = TcHmi.EventProvider.register(this.__id + '.onAttached', this.__onAttached());
+                    this.__onDetachedDestroyEvent = TcHmi.EventProvider.register(this.__id + '.onDetached', this.__onDetached());
                     // raise onTimerStart event when Start is true on init - ie the Start property
                     if (this.getStart()) {
                         TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
@@ -91,16 +108,13 @@ var TcHmi;
                      * Disable everything which is not needed while the control is not part of the active dom.
                      * No need to listen to events for example!
                      */
-                    null !== this.__onUserInteractionFinishedHourDestroyEvent && (this.__onUserInteractionFinishedHourDestroyEvent(),
-                        this.__onUserInteractionFinishedHourDestroyEvent = null),
-                        null !== this.__onUserInteractionFinishedMinuteDestroyEvent && (this.__onUserInteractionFinishedMinuteDestroyEvent(),
-                            this.__onUserInteractionFinishedMinuteDestroyEvent = null),
-                        null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
-                            this.__onUserInteractionFinishedSecondDestroyEvent = null),
-                        null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
-                            this.__onClickStartDestroyEvent = null),
-                        null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
-                            this.__onClickResetDestroyEvent = null);
+                    this.__onUserInteractionFinishedHourDestroyEvent = null;
+                    this.__onUserInteractionFinishedMinuteDestroyEvent = null;
+                    this.__onUserInteractionFinishedSecondDestroyEvent = null;
+                    this.__onClickStartDestroyEvent = null;
+                    this.__onClickResetDestroyEvent = null;
+                    this.__onAttachedDestroyEvent = null;
+                    this.__onDetachedDestroyEvent = null;
                 }
                 /**
                 * Destroy the current control instance.
@@ -135,6 +149,30 @@ var TcHmi;
                     };
                 }
                 ;
+                __onAttached() {
+                    return (evt) => {
+                    };
+                }
+                ;
+                __onDetached() {
+                    return (evt) => {
+                    };
+                }
+                ;
+                // convert milliseconds back to PT timespan format
+                __millisecondsToTimespan(milliseconds) {
+                    // Ensure input is a positive number
+                    if (milliseconds < 0) {
+                        milliseconds = 0;
+                    }
+                    // Calculate duration components
+                    const seconds = Math.floor(milliseconds / 1000) % 60;
+                    const minutes = Math.floor(milliseconds / (1000 * 60)) % 60;
+                    const hours = Math.floor(milliseconds / (1000 * 60 * 60)) % 24;
+                    // Format the duration
+                    const formattedDuration = `PT${hours ? hours + 'H' : ''}${minutes ? minutes + 'M' : ''}${seconds ? seconds + 'S' : ''}`;
+                    return formattedDuration;
+                }
                 // reads time from inputs and updates this.__time
                 __readTime() {
                     const timerObj = this.__getTimerObject();
@@ -319,6 +357,10 @@ var TcHmi;
                     }
                     if (this.__futureTime !== undefined) {
                         let remainingTime = this.__getRemainingTime(this.__futureTime);
+                        localStorage.setItem(this.__id + '_time', '' + this.__futureTime + '');
+                        localStorage.setItem(this.__id + '_is-started', '' + this.getStart() + '');
+                        const animationState = this.__progressCircle.css('stroke-dasharray');
+                        localStorage.setItem(this.__id + '_animation-progress', animationState);
                         if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
@@ -440,7 +482,7 @@ var TcHmi;
                     this.__timerInit = true;
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
                         if (this.__timerInit) {
-                            const totalTime = this.__getTotalTime();
+                            const totalTime = this.__getRemainingTime(this.__getFutureDate().getTime());
                             this.__startProgressCircle(totalTime);
                         }
                         this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
@@ -456,7 +498,10 @@ var TcHmi;
                     this.setReset(true);
                     this.setStart(false);
                     this.setTime(this.__time);
+                    localStorage.removeItem(this.__id + '_is-started');
+                    localStorage.removeItem(this.__id + '_current-time');
                     this.__progressAnimation.reset().skip();
+                    this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()));
                     TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                 }
                 /**
@@ -506,15 +551,35 @@ var TcHmi;
                     }
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
-                // animation for progress bar visual
-                __startProgressCircle(duration) {
+                __getCircumference() {
                     const radius = parseFloat(this.__progressCircle.attr('r'));
                     const circumference = 2 * Math.PI * radius;
-                    const strokeOffset = (1 / 4) * circumference;
-                    this.__progressCircle.attr('stroke-dashoffset', strokeOffset);
-                    this.__progressAnimation.addKeyframe('stroke-dasharray', `${circumference} 0`, 0)
-                        .addKeyframe('stroke-dasharray', `${circumference / 2} ${circumference / 2}`, 0.5)
-                        .addKeyframe('stroke-dasharray', `0 ${circumference}`, 1)
+                    return circumference;
+                }
+                // animation for progress bar visual
+                __startProgressCircle(duration) {
+                    const savedProgress = localStorage.getItem(this.__id + '_animation-progress');
+                    this.__progressAnimation.skip();
+                    this.__progressAnimation.clearKeyframes();
+                    localStorage.removeItem(this.__id + '_animation-progress');
+                    const circumference = this.__getCircumference();
+                    let keyframeZero = `${circumference} 0`;
+                    let keyframeOne = `0 ${circumference}`;
+                    this.__progressCircle.css('stroke-dasharray', keyframeZero);
+                    if (this.getStart() && savedProgress) {
+                        keyframeZero = savedProgress;
+                        keyframeOne = `0 ${circumference}`;
+                    }
+                    else if (this.getStart()) {
+                        keyframeZero = `${circumference} 0`;
+                        keyframeOne = `0 ${circumference}`;
+                    }
+                    else {
+                        keyframeZero = `${circumference} 0`;
+                        keyframeOne = `${circumference} 0`;
+                    }
+                    this.__progressAnimation.addKeyframe('stroke-dasharray', keyframeZero, 0)
+                        .addKeyframe('stroke-dasharray', keyframeOne, 1)
                         .duration(duration);
                     this.__progressAnimation.timingFunction('linear');
                     this.__progressAnimation.run();

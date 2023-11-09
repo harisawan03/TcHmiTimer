@@ -3444,6 +3444,24 @@
             },
             "SUBSYMBOL_MAPPING": "",
             "USEMAPPING": true
+        },
+        "time": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "DYNAMIC": true,
+            "MAPPING": "",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/String"
+                    },
+                    {
+                        "default": "PT0S"
+                    }
+                ]
+            },
+            "USEMAPPING": false
         }
     },
     "TEMPDH": "",
@@ -3540,7 +3558,8 @@
                 "Unsubscribe": 3,
                 "UnsubscribeEvents": 3,
                 "UpdateEventsSubscription": 3,
-                "UserSelectType": 1
+                "UserSelectType": 1,
+                "time": 3
             }
         }
     },
@@ -3579,11 +3598,12 @@
     "VIDEOSEGMENTSIZE": 1048576,
     "VIRTUALDIRECTORIES": {
         "/": "..\\..\\TcHmiTimerDemo\\",
-        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.48\\runtimes\\native1.12-tchmi",
-        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.48\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.BaseTemplate": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.BaseTemplate.12.760.54\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Controls": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.760.54\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.Functions": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.760.54\\runtimes\\native1.12-tchmi",
         "/TcHmiTimer": "..\\..\\TcHmiTimer",
         "/bin": "..\\..\\TcHmiTimerDemo\\bin\\",
         "/bin/framework": "..\\..\\TcHmiTimerDemo\\bin\\framework",
-        "/framework": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.48\\runtimes\\native1.12-tchmi"
+        "/framework": "..\\..\\TcHmiTimer\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.760.54\\runtimes\\native1.12-tchmi"
     }
 }
