@@ -74,7 +74,7 @@ var TcHmi;
                         this.__setStart();
                     }
                     localStorage.removeItem(this.__id + '_is-started');
-                    localStorage.removeItem(this.__id + '_current-time');
+                    localStorage.removeItem(this.__id + '_time');
                     this.__isTimerInitialized = true;
                 }
                 /**
@@ -360,7 +360,10 @@ var TcHmi;
                         localStorage.setItem(this.__id + '_time', '' + this.__futureTime + '');
                         localStorage.setItem(this.__id + '_is-started', '' + this.getStart() + '');
                         const animationState = this.__progressCircle.css('stroke-dasharray');
-                        localStorage.setItem(this.__id + '_animation-progress', animationState);
+                        const thisControl = document.getElementById(this.__id);
+                        if (thisControl) {
+                            localStorage.setItem(this.__id + '_animation-progress', animationState);
+                        }
                         if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
                             this.__countdown = undefined;
@@ -411,6 +414,8 @@ var TcHmi;
                 }
                 /** Start Timer */
                 __setStart() {
+                    localStorage.removeItem(this.__id + '_is-started');
+                    localStorage.removeItem(this.__id + '_time');
                     clearInterval(this.__countdown);
                     this.__countdown = undefined;
                     this.setStart(true);
@@ -499,7 +504,7 @@ var TcHmi;
                     this.setStart(false);
                     this.setTime(this.__time);
                     localStorage.removeItem(this.__id + '_is-started');
-                    localStorage.removeItem(this.__id + '_current-time');
+                    localStorage.removeItem(this.__id + '_time');
                     this.__progressAnimation.reset().skip();
                     this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()));
                     TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
