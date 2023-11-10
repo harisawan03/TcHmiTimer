@@ -19,6 +19,7 @@ declare module TcHmi {
                 private __onAttachedDestroyEvent;
                 private __onDetachedDestroyEvent;
                 private __isTimerInitialized;
+                private __timeSet;
                 protected __elementTemplateRootTimer: JQuery;
                 protected __time: string;
                 protected __start: Boolean | undefined;
@@ -136,7 +137,7 @@ declare module TcHmi {
                 getReset(): Boolean | undefined;
                 protected __processReset(): void;
                 protected __getCircumference(): number;
-                protected __startProgressCircle(duration: number): void;
+                protected __startProgressCircle(duration: number, setTime: number): void;
             }
         }
     }

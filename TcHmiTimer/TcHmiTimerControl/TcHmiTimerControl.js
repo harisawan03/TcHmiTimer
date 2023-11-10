@@ -72,9 +72,15 @@ var TcHmi;
                         const convertedTime = this.__millisecondsToTimespan(remainingTime);
                         this.setTime(convertedTime);
                         this.__setStart();
+                        let storedSetTime = localStorage.getItem(this.__id + '_set-time');
+                        if (storedSetTime) {
+                            this.__timeSet = parseInt(storedSetTime);
+                        }
+                        this.__startProgressCircle(remainingTime, this.__timeSet);
                     }
                     localStorage.removeItem(this.__id + '_is-started');
                     localStorage.removeItem(this.__id + '_time');
+                    localStorage.removeItem(this.__id + '_set-time');
                     this.__isTimerInitialized = true;
                 }
                 /**
@@ -139,6 +145,7 @@ var TcHmi;
                 }
                 __onClickStart() {
                     return (evt) => {
+                        this.__timeSet = this.__getTotalTime(); //MAKE SURE THIS IS THE RIGHT PLACE FOR THIS CALL
                         this.__setStart();
                     };
                 }
@@ -364,7 +371,8 @@ var TcHmi;
                         const animationState = this.__progressCircle.css('stroke-dasharray');
                         const thisControl = document.getElementById(this.__id);
                         if (thisControl) {
-                            localStorage.setItem(this.__id + '_animation-progress', animationState);
+                            //localStorage.setItem(this.__id + '_animation-progress', animationState);
+                            localStorage.setItem(this.__id + '_set-time', '' + this.__timeSet + '');
                         }
                         if (remainingTime < 1000) {
                             clearInterval(this.__countdown);
@@ -412,6 +420,7 @@ var TcHmi;
                     return this.__time;
                 }
                 __processTime() {
+                    this.__writeTime();
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
                 /** Start Timer */
@@ -489,8 +498,9 @@ var TcHmi;
                     this.__timerInit = true;
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
                         if (this.__timerInit) {
-                            const totalTime = this.__getRemainingTime(this.__getFutureDate().getTime());
-                            this.__startProgressCircle(totalTime);
+                            const futureTime = this.__getFutureDate().getTime();
+                            const totalTime = this.__getRemainingTime(futureTime);
+                            this.__startProgressCircle(totalTime, this.__timeSet);
                         }
                         this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
                         this.__countdown = setInterval(() => {
@@ -507,8 +517,9 @@ var TcHmi;
                     this.setTime(this.__time);
                     localStorage.removeItem(this.__id + '_is-started');
                     localStorage.removeItem(this.__id + '_time');
+                    localStorage.removeItem(this.__id + '_set-time');
                     this.__progressAnimation.reset().skip();
-                    this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()));
+                    this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()), this.__timeSet);
                     TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                 }
                 /**
@@ -564,21 +575,31 @@ var TcHmi;
                     return circumference;
                 }
                 // animation for progress bar visual
-                __startProgressCircle(duration) {
-                    const savedProgress = localStorage.getItem(this.__id + '_animation-progress');
+                __startProgressCircle(duration, setTime) {
+                    //const savedProgress = localStorage.getItem(this.__id + '_animation-progress');
                     this.__progressAnimation.skip();
                     this.__progressAnimation.clearKeyframes();
-                    localStorage.removeItem(this.__id + '_animation-progress');
+                    //localStorage.removeItem(this.__id + '_animation-progress');
                     const circumference = this.__getCircumference();
                     let keyframeZero = `${circumference} 0`;
                     let keyframeOne = `0 ${circumference}`;
-                    this.__progressCircle.css('stroke-dasharray', keyframeZero);
-                    if (this.getStart() && savedProgress) {
-                        keyframeZero = savedProgress;
-                        keyframeOne = `0 ${circumference}`;
+                    let fill = circumference;
+                    let empty = 0;
+                    if (setTime !== 0) {
+                        fill = circumference * (duration / setTime);
+                        empty = circumference * ((setTime - duration) / setTime);
                     }
-                    else if (this.getStart()) {
-                        keyframeZero = `${circumference} 0`;
+                    else {
+                        fill = circumference;
+                        empty = 0;
+                    }
+                    //this.__progressCircle.css('stroke-dasharray', keyframeZero);
+                    //if (this.getStart() && savedProgress) {
+                    //    keyframeZero = savedProgress;
+                    //    keyframeOne = `0 ${circumference}`;
+                    //} else
+                    if (this.getStart()) {
+                        keyframeZero = `${fill} ${empty}`;
                         keyframeOne = `0 ${circumference}`;
                     }
                     else {

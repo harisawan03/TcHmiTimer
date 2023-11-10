@@ -45,6 +45,7 @@ module TcHmi {
                 private __onAttachedDestroyEvent: any;
                 private __onDetachedDestroyEvent: any;
                 private __isTimerInitialized: Boolean;
+                private __timeSet: number;
 
                 protected __elementTemplateRootTimer!: JQuery;
                 protected __time: string;
@@ -99,10 +100,17 @@ module TcHmi {
                         const convertedTime = this.__millisecondsToTimespan(remainingTime);
                         this.setTime(convertedTime);
                         this.__setStart();
+
+                        let storedSetTime = localStorage.getItem(this.__id + '_set-time');
+                        if (storedSetTime) {
+                            this.__timeSet = parseInt(storedSetTime);
+                        }
+                        this.__startProgressCircle(remainingTime, this.__timeSet);
                     }
 
                     localStorage.removeItem(this.__id + '_is-started');
                     localStorage.removeItem(this.__id + '_time');
+                    localStorage.removeItem(this.__id + '_set-time');
 
                     this.__isTimerInitialized = true;
                 }
@@ -181,6 +189,7 @@ module TcHmi {
 
                 private __onClickStart(): any {
                     return (evt: any) => {
+                        this.__timeSet = this.__getTotalTime(); //MAKE SURE THIS IS THE RIGHT PLACE FOR THIS CALL
                         this.__setStart();
                     }
                 };
@@ -488,7 +497,8 @@ module TcHmi {
                         const thisControl = document.getElementById(this.__id);
                         
                         if (thisControl) {
-                            localStorage.setItem(this.__id + '_animation-progress', animationState);
+                            //localStorage.setItem(this.__id + '_animation-progress', animationState);
+                            localStorage.setItem(this.__id + '_set-time', '' + this.__timeSet + '');
                         }
 
                         if (remainingTime < 1000) {
@@ -548,6 +558,7 @@ module TcHmi {
                 }
 
                 protected __processTime() {
+                    this.__writeTime();
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
                 }
 
@@ -643,8 +654,9 @@ module TcHmi {
                     if (this.__start && this.__elementTemplateRootTimer.find('#Time')[0].innerHTML !== '00:00:00') {
 
                         if (this.__timerInit) {
-                            const totalTime = this.__getRemainingTime(this.__getFutureDate().getTime());
-                            this.__startProgressCircle(totalTime);
+                            const futureTime = this.__getFutureDate().getTime();
+                            const totalTime = this.__getRemainingTime(futureTime);
+                            this.__startProgressCircle(totalTime, this.__timeSet);
                         }
 
                         this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__updateTime();
@@ -665,8 +677,9 @@ module TcHmi {
                     this.setTime(this.__time);
                     localStorage.removeItem(this.__id + '_is-started');
                     localStorage.removeItem(this.__id + '_time');
+                    localStorage.removeItem(this.__id + '_set-time');
                     this.__progressAnimation.reset().skip();
-                    this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()));
+                    this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()), this.__timeSet);
                     TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                 }
 
@@ -736,26 +749,38 @@ module TcHmi {
                 }
 
                 // animation for progress bar visual
-                protected __startProgressCircle(duration: number) {
+                protected __startProgressCircle(duration: number, setTime: number) {
 
-                    const savedProgress = localStorage.getItem(this.__id + '_animation-progress');
+                    //const savedProgress = localStorage.getItem(this.__id + '_animation-progress');
 
                     this.__progressAnimation.skip();
                     this.__progressAnimation.clearKeyframes();
-                    localStorage.removeItem(this.__id + '_animation-progress');
+                    //localStorage.removeItem(this.__id + '_animation-progress');
 
                     const circumference = this.__getCircumference();
 
                     let keyframeZero = `${circumference} 0`;
                     let keyframeOne = `0 ${circumference}`;
 
-                    this.__progressCircle.css('stroke-dasharray', keyframeZero);
+                    let fill = circumference;
+                    let empty = 0;
 
-                    if (this.getStart() && savedProgress) {
-                        keyframeZero = savedProgress;
-                        keyframeOne = `0 ${circumference}`;
-                    } else if (this.getStart()) {
-                        keyframeZero = `${circumference} 0`;
+                    if (setTime !== 0) {
+                        fill = circumference * (duration / setTime);
+                        empty = circumference * ((setTime - duration) / setTime);
+                    } else {
+                        fill = circumference;
+                        empty = 0;
+                    }
+
+                    //this.__progressCircle.css('stroke-dasharray', keyframeZero);
+
+                    //if (this.getStart() && savedProgress) {
+                    //    keyframeZero = savedProgress;
+                    //    keyframeOne = `0 ${circumference}`;
+                    //} else
+                    if (this.getStart()) {
+                        keyframeZero = `${fill} ${empty}`;
                         keyframeOne = `0 ${circumference}`;
                     } else {
                         keyframeZero = `${circumference} 0`;

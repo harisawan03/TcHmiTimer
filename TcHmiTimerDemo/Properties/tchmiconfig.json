@@ -80,7 +80,7 @@
     {
       "url": "Pages/TimerPageStandalone.content",
       "preload": false,
-      "keepAlive": false,
+      "keepAlive": true,
       "loadSync": false,
       "preloadBindings": false
     },
