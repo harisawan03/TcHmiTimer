@@ -285,7 +285,8 @@ var TcHmi;
                     if (sIndex !== -1) {
                         seconds = parseInt(timeString.slice(mIndex + 1, sIndex));
                     }
-                    return this.__formatTime(hours, minutes, seconds);
+                    let convertedTime = this.__formatTime(hours, minutes, seconds);
+                    return convertedTime;
                 }
                 /**
                  *
@@ -297,7 +298,8 @@ var TcHmi;
                     let hours = Math.floor(milliseconds / (1000 * 60 * 60));
                     let minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
                     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
-                    return this.__formatTime(hours, minutes, seconds);
+                    let convertedMs = this.__formatTime(hours, minutes, seconds);
+                    return convertedMs;
                 }
                 // get time in HH:MM:SS string format
                 __getFormattedTime() {

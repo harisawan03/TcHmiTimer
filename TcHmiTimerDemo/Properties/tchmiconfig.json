@@ -66,14 +66,14 @@
     {
       "url": "Pages/TimerPagePopup.content",
       "preload": false,
-      "keepAlive": true,
+      "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
       "url": "Pages/TimerPageLinked.content",
       "preload": false,
-      "keepAlive": true,
+      "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },

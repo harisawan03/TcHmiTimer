@@ -361,7 +361,9 @@ module TcHmi {
                         seconds = parseInt(timeString.slice(mIndex + 1, sIndex));
                     }
 
-                    return this.__formatTime(hours, minutes, seconds);
+                    let convertedTime = this.__formatTime(hours, minutes, seconds);
+
+                    return convertedTime;
 
                 }
 
@@ -377,7 +379,9 @@ module TcHmi {
                     let minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
                     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
 
-                    return this.__formatTime(hours, minutes, seconds);
+                    let convertedMs = this.__formatTime(hours, minutes, seconds);
+
+                    return convertedMs;
 
                 }
 
@@ -482,6 +486,7 @@ module TcHmi {
 
                         const animationState = this.__progressCircle.css('stroke-dasharray');
                         const thisControl = document.getElementById(this.__id);
+                        
                         if (thisControl) {
                             localStorage.setItem(this.__id + '_animation-progress', animationState);
                         }
@@ -719,6 +724,7 @@ module TcHmi {
                     }
 
                     this.__elementTemplateRootTimer.find('#Time')[0].innerHTML = this.__convertTime(this.__time);
+
                 }
 
 
