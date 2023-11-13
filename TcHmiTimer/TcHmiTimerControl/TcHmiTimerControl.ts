@@ -96,7 +96,7 @@ module TcHmi {
 
                     if (this.getStart()) {
                         const storedTime = localStorage.getItem(this.__id + '_time');
-                        let remainingTime = this.__getRemainingTime(parseInt(storedTime!));
+                        const remainingTime = this.__getRemainingTime(parseInt(storedTime!)); // ADD A CHECK HERE
                         const convertedTime = this.__millisecondsToTimespan(remainingTime);
                         this.setTime(convertedTime);
                         this.__setStart();
@@ -202,7 +202,11 @@ module TcHmi {
 
                 private __onAttached(): any {
                     return (evt: any) => {
-                        
+                        if (this.__keepAlive) {
+                            const storedTime = localStorage.getItem(this.__id + '_time');
+                            const remainingTime = this.__getRemainingTime(parseInt(storedTime!)); // ADD CHECK HERE
+                            this.__startProgressCircle(remainingTime, this.__timeSet);
+                        }
                     }
                 };
 
