@@ -123,11 +123,13 @@ var TcHmi;
                         null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
                             this.__onClickStartDestroyEvent = null),
                         null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
-                            this.__onClickResetDestroyEvent = null),
+                            this.__onClickResetDestroyEvent = null);
+                    if (!this.__keepAlive) {
                         null !== this.__onAttachedDestroyEvent && (this.__onAttachedDestroyEvent(),
                             this.__onAttachedDestroyEvent = null),
-                        null !== this.__onDetachedDestroyEvent && (this.__onDetachedDestroyEvent(),
-                            this.__onDetachedDestroyEvent = null);
+                            null !== this.__onDetachedDestroyEvent && (this.__onDetachedDestroyEvent(),
+                                this.__onDetachedDestroyEvent = null);
+                    }
                 }
                 /**
                 * Destroy the current control instance.
