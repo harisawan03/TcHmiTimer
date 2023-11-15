@@ -152,13 +152,16 @@ module TcHmi {
                      * Disable everything which is not needed while the control is not part of the active dom.
                      * No need to listen to events for example!
                      */
-                    this.__onUserInteractionFinishedHourDestroyEvent = null;
-                    this.__onUserInteractionFinishedMinuteDestroyEvent = null;
-                    this.__onUserInteractionFinishedSecondDestroyEvent = null;
-                    this.__onClickStartDestroyEvent = null;
-                    this.__onClickResetDestroyEvent = null;
-                    this.__onAttachedDestroyEvent = null;
-                    this.__onDetachedDestroyEvent = null;
+                    null !== this.__onUserInteractionFinishedHourDestroyEvent && (this.__onUserInteractionFinishedHourDestroyEvent(),
+                        this.__onUserInteractionFinishedHourDestroyEvent = null),
+                        null !== this.__onUserInteractionFinishedMinuteDestroyEvent && (this.__onUserInteractionFinishedMinuteDestroyEvent(),
+                            this.__onUserInteractionFinishedMinuteDestroyEvent = null),
+                        null !== this.__onUserInteractionFinishedSecondDestroyEvent && (this.__onUserInteractionFinishedSecondDestroyEvent(),
+                            this.__onUserInteractionFinishedSecondDestroyEvent = null),
+                        null !== this.__onClickStartDestroyEvent && (this.__onClickStartDestroyEvent(),
+                            this.__onClickStartDestroyEvent = null),
+                        null !== this.__onClickResetDestroyEvent && (this.__onClickResetDestroyEvent(),
+                            this.__onClickResetDestroyEvent = null)
 
                 }
 
