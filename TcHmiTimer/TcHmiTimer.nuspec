@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>TcHmiTimer</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>A simple Timer control for use in TwinCAT HMI. Can be used as a standalone timer or linked to the PLC.</description>
     <authors>Haris Awan</authors>
     <title>TcHmiTimer</title>
