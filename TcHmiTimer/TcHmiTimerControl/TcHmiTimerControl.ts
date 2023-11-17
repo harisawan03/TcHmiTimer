@@ -88,11 +88,11 @@ module TcHmi {
 
                     // start timer when Start is true on init - ie the Start property
                     const isStarted = localStorage.getItem(this.__id + '_is-started');
-                    if (isStarted === 'true') {
+                    if (isStarted === 'true' || this.__start) {
                         this.setStart(true);
                     } else {
                         this.setStart(false);
-                    }                    
+                    }
 
                     if (this.getStart()) {
                         const storedTime = localStorage.getItem(this.__id + '_time');
@@ -104,6 +104,8 @@ module TcHmi {
                         let storedSetTime = localStorage.getItem(this.__id + '_set-time');
                         if (storedSetTime) {
                             this.__timeSet = parseInt(storedSetTime);
+                        } else {
+                            this.__timeSet = this.__getTotalTime();
                         }
                         this.__startProgressCircle(remainingTime, this.__timeSet);
                     }
@@ -133,11 +135,6 @@ module TcHmi {
                     this.__onClickResetDestroyEvent = TcHmi.EventProvider.register(this.__id + '_resetBtn.onPressed', this.__onClickReset());
                     this.__onAttachedDestroyEvent = TcHmi.EventProvider.register(this.__id + '.onAttached', this.__onAttached());
                     this.__onDetachedDestroyEvent = TcHmi.EventProvider.register(this.__id + '.onDetached', this.__onDetached());
-
-                    // raise onTimerStart event when Start is true on init - ie the Start property
-                    if (this.getStart()) {
-                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
-                    }
 
                 }
 
@@ -199,6 +196,7 @@ module TcHmi {
 
                 private __onClickStart(): any {
                     return (evt: any) => {
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                         this.__timeSet = this.__getTotalTime(); //MAKE SURE THIS IS THE RIGHT PLACE FOR THIS CALL
                         this.__setStart();
                     }
@@ -206,6 +204,7 @@ module TcHmi {
 
                 private __onClickReset(): any {
                     return (evt: any) => {
+                        TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                         this.setStart(false);
                     }
                 };
@@ -217,6 +216,7 @@ module TcHmi {
                             const remainingTime = this.__getRemainingTime(parseInt(storedTime!)); // ADD CHECK HERE
                             this.__startProgressCircle(remainingTime, this.__timeSet);
                         }
+
                     }
                 };
 
@@ -587,7 +587,6 @@ module TcHmi {
                     this.setStart(true);
                     this.setReset(false);
                     this.setTime(this.__time);
-                    TcHmi.EventProvider.raise(this.__id + '.onTimerStart');
                 }
 
                 /**
@@ -694,7 +693,6 @@ module TcHmi {
                     localStorage.removeItem(this.__id + '_set-time');
                     this.__progressAnimation.reset().skip();
                     this.__startProgressCircle(this.__getRemainingTime(this.__getFutureDate().getTime()), this.__timeSet);
-                    TcHmi.EventProvider.raise(this.__id + '.onTimerReset');
                 }
 
                 /**

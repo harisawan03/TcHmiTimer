@@ -2,7 +2,7 @@
   <div id="ViewDesktopBeckhoffLogo" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-src="Images/Beckhoff_Logo.svg" data-tchmi-left="20" data-tchmi-top="20" data-tchmi-width="194" data-tchmi-height="57" data-tchmi-zindex="1">
 
   </div>
-<div id="TcHmiPopup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="486" data-tchmi-height-unit="px" data-tchmi-left="387" data-tchmi-left-unit="px" data-tchmi-top="145" data-tchmi-top-unit="px" data-tchmi-width="450" data-tchmi-width-unit="px" data-tchmi-target-file-host-keep-alive="true" data-tchmi-target-file-host-preload="false" data-tchmi-modal="false" data-tchmi-header-text="This timer is linked to the PLC" data-tchmi-zindex="1">
+<div id="TcHmiPopup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="486" data-tchmi-height-unit="px" data-tchmi-left="387" data-tchmi-left-unit="px" data-tchmi-top="145" data-tchmi-top-unit="px" data-tchmi-width="450" data-tchmi-width-unit="px" data-tchmi-target-file-host-keep-alive="false" data-tchmi-modal="false" data-tchmi-header-text="This timer is linked to the PLC" data-tchmi-zindex="1">
 
 
 
@@ -57,7 +57,7 @@
 </script>
 
 </div>
-<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-time="PT0S" data-tchmi-zindex="1">
+<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="true" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-time="PT1M">
 
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [

@@ -114,9 +114,15 @@
         "readonly": false
       },
       "time": {
-        "value": "PT0S",
+        "value": "PT10S",
         "type": "tchmi:general#/definitions/String",
-        "persist": false,
+        "persist": true,
+        "readonly": false
+      },
+      "start": {
+        "value": false,
+        "type": "tchmi:general#/definitions/Boolean",
+        "persist": true,
         "readonly": false
       }
     },

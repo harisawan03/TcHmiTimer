@@ -122,7 +122,7 @@
       "visible": true,
       "displayPriority": 30,
       "category": "Control",
-      "description": "The timerstart event fires when the timer has been started.",
+      "description": "The timerstart event fires when the timer has been started via the Start button.",
       "heritable": true,
       "allowsPreventDefault": false
     },
@@ -132,7 +132,7 @@
       "visible": true,
       "displayPriority": 30,
       "category": "Control",
-      "description": "The timerreset event fires when the timer has been reset.",
+      "description": "The timerreset event fires when the timer has been reset via the Reset button.",
       "heritable": true,
       "allowsPreventDefault": false
     }
