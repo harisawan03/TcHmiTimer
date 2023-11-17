@@ -57,7 +57,7 @@
 </script>
 
 </div>
-<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="true" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-time="PT1M">
+<div id="TcHmiTimerControl_3" data-tchmi-type="TcHmi.Controls.TcHmiTimer.TcHmiTimerControl" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-start="false" data-tchmi-top="281" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-time="PT0S">
 
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [
@@ -119,7 +119,7 @@
 </div>
 <div id="TcHmiTextblock_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="185" data-tchmi-left-unit="px" data-tchmi-text="%f%TcHmi.Functions.TcHmiTimer.ConvertTime(%s%PLC1.MAIN.RemainingTime%/s%)%/f%" data-tchmi-top="145" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="1">
 </div>
-<div id="TcHmiNavigation" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiNavigation" data-tchmi-height="79" data-tchmi-height-unit="px" data-tchmi-left="224" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="604" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-navigation-orientation="Horizontal" data-tchmi-show-back-button="false" data-tchmi-target-region="%ctrl%TcHmiRegion%/ctrl%">
+<div id="TcHmiNavigation" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiNavigation" data-tchmi-height="79" data-tchmi-height-unit="px" data-tchmi-left="555" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="163" data-tchmi-width-unit="px" data-tchmi-zindex="1" data-tchmi-navigation-orientation="Horizontal" data-tchmi-show-back-button="false" data-tchmi-target-region="%ctrl%TcHmiRegion%/ctrl%">
 
 <script data-tchmi-target-attribute="data-tchmi-navigation-structure" type="application/json">
 [
@@ -130,10 +130,6 @@
   {
     "name": "Standalone",
     "content": "Pages/TimerPageStandalone.content"
-  },
-  {
-    "name": "Tabbed",
-    "content": "Pages/TimerTabs.content"
   }
 ]
 </script>
